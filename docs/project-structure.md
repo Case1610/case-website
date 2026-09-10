@@ -32,7 +32,7 @@ src/
 │   ├── About.tsx          # 自己紹介ページ（詳細プロフィール）
 │   ├── Contact.tsx        # お問い合わせページ
 │   ├── NotFound.tsx       # 404エラーページ
-│   ├── profile.json       # プロフィールデータ（JSON）
+│   ├── profile.json       # 表示用プロフィールデータ（ビルド時に生成。docs/profile-privacy.md 参照）
 │   └── tools/             # ツールページ群
 │       ├── index.tsx      # ツールページルート
 │       ├── MarkdownSandbox.tsx    # Markdownエディター

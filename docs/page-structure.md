@@ -77,7 +77,9 @@ Contact（連絡を取る）
 - ページごとのサイズ調整
 
 ### データ管理
-**profile.json**: すべてのプロフィール情報を一元管理  
+**profile.json**: 各ページが読む表示用データ。原本（`profile.source.json` または
+`PROFILE_JSON_B64`）からビルド時に生成され、非公開項目は削除済み。
+詳細は `docs/profile-privacy.md` を参照  
 **利点**: 
 - 情報の整合性保持
 - 更新作業の効率化

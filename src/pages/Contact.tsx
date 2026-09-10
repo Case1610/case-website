@@ -9,11 +9,11 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import EmailIcon from '@mui/icons-material/Email';
 import ProfileAvatar from '../components/ProfileAvatar';
 import profileData from './profile.json';
-import { transformProfileForDisplay, type ProfileData } from '../utils/profileDisplay';
+import { transformProfileForDisplay } from '../utils/profileTransform.mjs';
 
 function Contact() {
   // Apply privacy controls to profile data
-  const displayedProfile = transformProfileForDisplay(profileData as ProfileData);
+  const displayedProfile = transformProfileForDisplay(profileData);
   const { basicInfo, social_links } = displayedProfile;
 
   return (

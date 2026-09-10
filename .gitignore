@@ -13,6 +13,9 @@ dist-ssr
 *.local
 
 # Personal information
+# profile.source.json: 実データの原本（ローカル開発用）
+# profile.json: そこから生成される配信用データ（prebuild/predevで毎回作り直される）
+src/pages/profile.source.json
 src/pages/profile.json
 
 # Editor directories and files

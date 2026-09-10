@@ -1,17 +1,12 @@
 {
   "basicInfo": {
     "name": {
-      "ja": {
-        "first": "太郎",
-        "last": "山田"
-      },
-      "en": {
-        "first": "Taro",
-        "last": "Yamada"
-      }
+      "ja": { "first": "太郎", "last": "山田" },
+      "en": { "first": "Taro", "last": "Yamada" }
     },
     "gender": "Male",
-    "birthday": "1999",
+    "birthday": "1999-01-23",
+    "birthdayDisplay": "1999",
     "nationality": "Japanese"
   },
   "biography": {
@@ -19,38 +14,26 @@
     "short": "Sample Catchphrase.",
     "long": "これはサンプルの詳細プロフィールです。"
   },
-  "interests": [
-    "プログラミング",
-    "デザイン",
-    "写真撮影"
-  ],
+  "interests": ["プログラミング", "デザイン", "写真撮影"],
   "strengths_finder": {
-    "top_5": [
-      "Sample1",
-      "Sample2",
-      "Sample3",
-      "Sample4",
-      "Sample5"
+    "top_5": ["Sample1", "Sample2", "Sample3", "Sample4", "Sample5"],
+    "all_ranking": [
+      "Sample1", "Sample2", "Sample3", "Sample4", "Sample5",
+      "Sample6", "Sample7", "Sample8", "Sample9", "Sample10"
     ]
   },
   "social_links": [
-    {
-      "platform": "Twitter",
-      "url": "https://twitter.com/sample"
-    }
+    { "platform": "Twitter", "url": "https://twitter.com/sample" },
+    { "platform": "Wantedly", "url": "https://www.wantedly.com/id/sample" }
   ],
-  "values": [
-    "サンプル価値観1",
-    "サンプル価値観2"
-  ],
-  "goals": [
-    "サンプル目標1",
-    "サンプル目標2"
-  ],
+  "values": ["サンプル価値観1", "サンプル価値観2"],
+  "goals": ["サンプル目標1", "サンプル目標2"],
   "career": [
     {
-      "organization": "サンプル企業",
-      "department": "サンプル部署",
+      "organization": "サンプル株式会社",
+      "organizationDisplay": "IT企業",
+      "department": "サンプル事業部 サンプル部",
+      "departmentDisplay": "開発部門",
       "start_date": "2024-4-1",
       "end_date": null,
       "description": "サンプルの職歴説明"
@@ -59,7 +42,9 @@
   "education": [
     {
       "organization": "サンプル大学",
-      "department": "サンプル学部",
+      "organizationDisplay": "私立大学",
+      "department": "サンプル学部 サンプル学科",
+      "departmentDisplay": "工学系学部",
       "start_date": "2018-4-1",
       "end_date": "2022-3-31",
       "description": "サンプルの学歴説明"
@@ -69,18 +54,19 @@
     {
       "name": "サンプル資格",
       "date": "2020-12",
+      "isPersonalAchievement": false,
+      "description": {
+        "title": "サンプル資格の正式名称",
+        "description": "サンプルの資格説明",
+        "url": "https://example.com/sample"
+      }
+    },
+    {
+      "name": "個人特定しやすいサンプル実績",
+      "date": "2021-03",
+      "isPersonalAchievement": true,
       "description": null
     }
   ],
-  "skills": [
-    {
-      "name": "HTML"
-    },
-    {
-      "name": "CSS"
-    },
-    {
-      "name": "JavaScript"
-    }
-  ]
+  "skills": [{ "name": "HTML" }, { "name": "CSS" }, { "name": "JavaScript" }]
 }

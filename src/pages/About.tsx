@@ -12,11 +12,11 @@ import WorkIcon from '@mui/icons-material/Work';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import ProfileAvatar from '../components/ProfileAvatar';
 import profileData from './profile.json';
-import { transformProfileForDisplay, type ProfileData } from '../utils/profileDisplay';
+import { transformProfileForDisplay } from '../utils/profileTransform.mjs';
 
 function About() {
   // Apply privacy controls to profile data
-  const displayedProfile = transformProfileForDisplay(profileData as ProfileData);
+  const displayedProfile = transformProfileForDisplay(profileData);
   const { basicInfo, biography, interests, strengths_finder, values, goals, career, education, certifications, skills } = displayedProfile;
   
   const formatDate = (dateString: string) => {

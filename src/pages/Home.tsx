@@ -17,7 +17,7 @@ import Divider from '@mui/material/Divider';
 import { Link } from 'react-router-dom';
 import ProfileAvatar from '../components/ProfileAvatar';
 import profileData from './profile.json';
-import { transformProfileForDisplay, type ProfileData } from '../utils/profileDisplay';
+import { transformProfileForDisplay } from '../utils/profileTransform.mjs';
 
 const galleryItems = [
   { type: 'image' as const, src: '/gallery/A64_2023-08-16_13.26.18.000_+0900.jpg' },
@@ -36,7 +36,7 @@ function Home() {
   const [modal, setModal] = useState<{ open: boolean; src: string; type: 'image' | 'video' } | null>(null);
 
   // Profile data from JSON with privacy control
-  const displayedProfile = transformProfileForDisplay(profileData as ProfileData);
+  const displayedProfile = transformProfileForDisplay(profileData);
   const { basicInfo, biography, social_links } = displayedProfile;
 
   return (

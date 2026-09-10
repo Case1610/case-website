@@ -10,6 +10,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "verify:redaction": "node scripts/verify-redaction.mjs",
     "deploy": "wrangler deploy"
   },
   "dependencies": {

@@ -6,23 +6,41 @@
 所属先など）が含まれる。このプロジェクトでは**ビルド時に**それらを削り、
 配信されるJSバンドルには表示可能なデータだけが載るようにしている。
 
+## 正本はこのリポジトリの外にある
+
+プロフィールの正本は、持ち主が別の非公開リポジトリで Markdown として管理している。
+そちらの方針は「原本は Markdown、JSON は生成物」。
+
+```
+Markdown の正本（別リポジトリ・非公開）
+  └─→ profile.source.json / PROFILE_JSON_B64   ← このリポジトリへの入力
+        └─→ profile.json                        ← 非公開項目を削除済み。バンドルに載る
+```
+
+`profile.source.json` と `PROFILE_JSON_B64` は**上流から供給される中間ファイル**であって、
+最上流の原本ではない。ここを直接編集しても正本には反映されず、次に上流から
+供給された時点で失われる。内容を変えたいときは正本の側を直すこと。
+
+上流との同期方法（手動コピーか生成スクリプトか）は持ち主が決める。
+
 ## ファイル構成
 
 | ファイル | 役割 | Git |
 |---|---|---|
-| `src/pages/profile.source.json` | 実データの原本（ローカル開発用） | `.gitignore` 対象 |
-| `PROFILE_JSON_B64`（GitHub Secrets） | 実データの原本（CI用、Base64） | リポジトリ外 |
-| `src/pages/profile.sample.json` | サンプル。原本が無いときのフォールバック | コミット対象 |
+| `src/pages/profile.source.json` | 上流から供給される入力（ローカル開発用）。正本ではない | `.gitignore` 対象 |
+| `PROFILE_JSON_B64`（GitHub Secrets） | 上流から供給される入力（CI用、Base64）。正本ではない | リポジトリ外 |
+| `src/pages/profile.sample.json` | サンプル。入力が無いときのフォールバック | コミット対象 |
 | `src/pages/profile.json` | **生成物**。バンドルに載る、削除済みのデータ | `.gitignore` 対象 |
 | `src/utils/profileTransform.mjs` | 表示制御の設定と変換ロジック（唯一の出所） | コミット対象 |
-| `scripts/generate-profile.mjs` | ビルド前に原本から `profile.json` を生成 | コミット対象 |
+| `scripts/generate-profile.mjs` | ビルド前に入力から `profile.json` を生成 | コミット対象 |
+| `scripts/verify-redaction.mjs` | 非公開項目が生成物へ混入しないことの回帰テスト | コミット対象 |
 
 `profile.json` は `prebuild` / `predev` で毎回作り直される生成物なので、手で編集しない。
 編集しても次のビルドで上書きされる。
 
-## 原本の優先順位
+## 入力の優先順位
 
-`scripts/generate-profile.mjs` は次の順で原本を探す。
+`scripts/generate-profile.mjs` は次の順で入力を探す。
 
 1. 環境変数 `PROFILE_JSON_B64`（CI。GitHub Secrets から渡される）
 2. `src/pages/profile.source.json`（ローカル開発）
@@ -49,7 +67,7 @@ Vite は `import` された JSON を**静的にJSバンドルへ埋め込む**�
 
 **バンドルに載ったものは全て公開される。** 表示制御は「バンドルに載る範囲を絞る」
 仕組みであって、載せたうえで隠す仕組みではない。
-サイトに出したくないデータは、原本の側に留めておくこと。
+サイトに出したくないデータは、上流の正本の側に留めておくこと。
 
 ## 設定方法
 
@@ -128,14 +146,15 @@ export const PROFILE_DISPLAY_CONFIG = {
 ### ローカル開発
 
 ```bash
+# 上流の正本から profile.source.json を用意する（.gitignore対象）
+# 手元に無い場合はサンプルを雛形にする
 cp src/pages/profile.sample.json src/pages/profile.source.json
-# profile.source.json に実データを書く（.gitignore対象）
 npm run dev
 ```
 
 ### CI（GitHub Actions）
 
-GitHub Secrets に `PROFILE_JSON_B64` を登録する。値は原本JSONのBase64。
+GitHub Secrets に `PROFILE_JSON_B64` を登録する。値は入力JSONのBase64。
 
 ```bash
 base64 -w0 profile.source.json
@@ -146,9 +165,40 @@ base64 -w0 profile.source.json
 
 ## 検証方法
 
-変更後は、削ったはずの値がバンドルに残っていないか確認する。
+```bash
+npm run verify:redaction
+```
+
+カナリア値を入れた入力を変換し、隠す設定の項目が生成物から消えていること、
+表示対象が残っていること、変換が冪等であること、`*Display` 未設定で停止することを
+まとめて確認する。CI でもビルド前に実行され、失敗するとデプロイまで進まない。
+
+フィールドを追加したら `scripts/verify-redaction.mjs` のカナリアにも追加すること。
+カナリア値どうしが部分文字列になっていると誤検出するため、スクリプト側で
+その検査も行っている。
+
+バンドルを直接確認したい場合:
 
 ```bash
 npm run build
 grep -c "隠したはずの値" dist/assets/index-*.js   # 0 であること
 ```
+
+## 未解決: 表示されないまま配信されるフィールド
+
+型定義に存在し、入力に実データが入るが、**どのコンポーネントも表示しておらず、
+変換対象にもなっていない**フィールドがある。表示されないだけで配信はされるため、
+今回直したのと同じ形の問題が残っている。
+
+| フィールド | 状態 |
+|---|---|
+| `strengths_finder.all_ranking` | 未表示・未変換。`top_5` のみ表示されている |
+| `biography['short-values']` | 未表示・未変換 |
+| `certifications[].description.title` | 未表示・未変換。`description.description` のみ表示されている |
+
+扱いは持ち主が決める（入力から外す／設定項目を足して削る／実際に表示する）。
+決まるまでは、これらに機微な内容を入れないこと。
+
+なお `basicInfo.nationality` は `showNationality: false` で削除される一方、
+`About.tsx` が表示しようとしているため区切り文字だけが残る。
+表示するなら設定を、しないなら表示側を直す必要がある。

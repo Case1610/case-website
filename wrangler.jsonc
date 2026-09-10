@@ -1,0 +1,7 @@
+{
+  "name": "case-website",
+  "compatibility_date": "2026-09-10",
+  "assets": {
+    "directory": "./dist"
+  }
+}

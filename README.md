@@ -136,12 +136,19 @@ const galleryItems = [
 
 ## ドキュメント
 
+まずこの2つ:
+
+- **[現在の状態と未決の判断](docs/status.md)** — 作業を始める前に読む
+- **[プロフィールの非公開制御](docs/profile-privacy.md)** — プロフィール周りを触る前に読む
+
+その他:
+
 - [プロジェクト構造](docs/project-structure.md)
 - [コンポーネント追加方法](docs/how-to-add-component.md)
 - [ページ追加方法](docs/how-to-add-page.md)
 - [デプロイ方法](docs/how-to-deploy.md)
 - [CSSガイド](docs/css-guide.md)
-- [タスク状況](docs/task-status.md)
+- [タスクのバックログ](docs/task-status.md)（現在地ではない）
 
 ## ライセンス
 

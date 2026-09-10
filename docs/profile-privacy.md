@@ -192,12 +192,15 @@ grep -c "隠したはずの値" dist/assets/index-*.js   # 0 であること
 
 | フィールド | 状態 |
 |---|---|
-| `strengths_finder.all_ranking` | 未表示・未変換。`top_5` のみ表示されている |
+| ~~`strengths_finder.all_ranking`~~ | **解決済み**。表示しない方針が決まり、型から外して変換でも落とす |
 | `biography['short-values']` | 未表示・未変換 |
 | `certifications[].description.title` | 未表示・未変換。`description.description` のみ表示されている |
 
 扱いは持ち主が決める（入力から外す／設定項目を足して削る／実際に表示する）。
 決まるまでは、これらに機微な内容を入れないこと。
+
+`all_ranking` は「上流から供給しない」方針だが、混ざった場合に備えて
+変換側でも削除している（型定義からも外してある）。
 
 なお `basicInfo.nationality` は `showNationality: false` で削除される一方、
 `About.tsx` が表示しようとしているため区切り文字だけが残る。

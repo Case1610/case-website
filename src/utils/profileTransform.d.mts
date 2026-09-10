@@ -51,7 +51,6 @@ export interface ProfileSkill {
 
 export interface ProfileStrengthsFinder {
   top_5: string[];
-  all_ranking: string[];
 }
 
 export interface ProfileData {

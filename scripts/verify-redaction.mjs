@@ -28,7 +28,8 @@ const MUST_BE_REMOVED = {
   'education[].department（実際の研究室名）': 'REDACT-EDU-DEPT',
   'social_links Wantedly': 'REDACT-WANTEDLY-URL',
   'certifications isPersonalAchievement:true の実績': 'REDACT-PERSONAL-ACHIEVEMENT',
-  'certifications description.url': 'REDACT-CERT-URL'
+  'certifications description.url': 'REDACT-CERT-URL',
+  'strengths_finder.all_ranking（表示しないと決めたフィールド）': 'REDACT-ALL-RANKING'
 };
 
 // 表示する項目。消えていたら削りすぎなので失敗。
@@ -64,6 +65,9 @@ const assertCanariesAreDistinct = () => {
 
 const buildCanaryProfile = () => {
   const profile = JSON.parse(fs.readFileSync(samplePath, 'utf-8'));
+
+  // 上流から誤って供給された場合を模す（型からは外してある）
+  profile.strengths_finder.all_ranking = ['REDACT-ALL-RANKING-1', 'REDACT-ALL-RANKING-2'];
 
   profile.basicInfo.birthday = '1988-07-04';
   profile.basicInfo.birthdayDisplay = 'KEEP-BIRTHDAY';

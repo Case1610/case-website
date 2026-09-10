@@ -158,5 +158,9 @@ export const transformProfileForDisplay = (profileData) => {
     }));
   }
 
+  // 全順位リストは画面のどこにも出さないと決めたフィールド。上流から供給しない方針だが、
+  // 混ざったまま配信されると「表示されないのに届く」状態に戻るため、ここでも落とす。
+  delete transformed.strengths_finder.all_ranking;
+
   return transformed;
 };

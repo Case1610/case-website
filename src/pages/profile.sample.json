@@ -16,11 +16,7 @@
   },
   "interests": ["プログラミング", "デザイン", "写真撮影"],
   "strengths_finder": {
-    "top_5": ["Sample1", "Sample2", "Sample3", "Sample4", "Sample5"],
-    "all_ranking": [
-      "Sample1", "Sample2", "Sample3", "Sample4", "Sample5",
-      "Sample6", "Sample7", "Sample8", "Sample9", "Sample10"
-    ]
+    "top_5": ["Sample1", "Sample2", "Sample3", "Sample4", "Sample5"]
   },
   "social_links": [
     { "platform": "Twitter", "url": "https://twitter.com/sample" },

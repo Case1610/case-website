@@ -24,17 +24,6 @@ function About() {
     return `${date.getFullYear()}年${date.getMonth() + 1}月`;
   };
 
-  const calculateAge = (birthday: string) => {
-    const today = new Date();
-    const birthDate = new Date(birthday);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
-    return age;
-  };
-
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 6 }}>
       {/* プロフィールヘッダー */}
@@ -59,7 +48,7 @@ function About() {
               {basicInfo.name.en.first} {basicInfo.name.en.last}
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              {calculateAge(basicInfo.birthday)}歳 / {basicInfo.nationality}
+              {basicInfo.birthday}年生まれ
             </Typography>
           </Box>
         </Box>

@@ -33,6 +33,7 @@ export const works: Work[] = [
       '原則に反する判断をしたときは、その根拠を判断ログとして残している。' +
       'このサイト自体も、いずれここで決めたトークンの上に載せ替える予定。',
     repo: 'Case1610/case-design-system',
+    url: 'https://design-system.1610-case.workers.dev',
     tags: ['React', 'React Aria', 'vanilla-extract', 'TypeScript'],
   },
 ];

@@ -19,7 +19,7 @@ function Works() {
         Works
       </Typography>
       <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-        作ったもの。
+        作ったもの。まだ整理中のため、順次追加していきます。
       </Typography>
 
       <Box

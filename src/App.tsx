@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Home from './pages/Home';
 import About from './pages/About';
+import Works from './pages/Works';
 import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
 import ToolsIndex from './pages/tools';
@@ -24,6 +25,7 @@ const App: React.FC<AppProps> = ({ mode, setMode }) => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
+          <Route path="/works" element={<Works />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/tools/*" element={<ToolsIndex />} />
           <Route path="*" element={<NotFound />} />

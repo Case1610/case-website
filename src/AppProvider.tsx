@@ -1,19 +1,22 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { lightTheme, darkTheme } from './theme';
+import { useColorScheme } from './useColorScheme';
 import App from './App';
 import { ProfileProvider } from './data/ProfileProvider';
 
 const AppProvider: React.FC = () => {
-  const [mode, setMode] = useState<'light' | 'dark'>(
-    window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  const colorScheme = useColorScheme();
+  const theme = useMemo(
+    () => (colorScheme.resolved === 'dark' ? darkTheme : lightTheme),
+    [colorScheme.resolved]
   );
-  const theme = useMemo(() => (mode === 'light' ? lightTheme : darkTheme), [mode]);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <ProfileProvider>
-        <App mode={mode} setMode={setMode} />
+        <App colorScheme={colorScheme} />
       </ProfileProvider>
     </ThemeProvider>
   );

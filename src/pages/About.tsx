@@ -65,7 +65,15 @@ function About() {
         </Typography>
       </Paper>
 
-      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '2fr 1fr' }, gap: 4 }}>
+      {/* minmax(0, …) が要る。既定の 1fr は min-width:auto なので、
+          中身が縮まないとき列そのものが広がって画面から溢れる */}
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: 'minmax(0, 1fr)', lg: 'minmax(0, 2fr) minmax(0, 1fr)' },
+          gap: 4,
+        }}
+      >
         {/* メインコンテンツ */}
         <Box>
           {/* 経歴 */}

@@ -3,6 +3,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Box from '@mui/material/Box';
+import { text } from '../tokens';
 
 /**
  * プロフィールを取得できていない間の表示。
@@ -24,7 +25,7 @@ export function ProfileGate({ state }: { state: { status: 'loading' } | { status
     <Container maxWidth="sm" sx={{ mt: 6 }}>
       <Alert severity="warning">
         <AlertTitle>プロフィールを読み込めませんでした</AlertTitle>
-        <Box component="pre" sx={{ whiteSpace: 'pre-wrap', m: 0, fontSize: 13 }}>
+        <Box component="pre" sx={{ whiteSpace: 'pre-wrap', m: 0, fontSize: text.xs }}>
           {state.message}
         </Box>
       </Alert>

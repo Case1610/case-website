@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import ProfileAvatar from '../components/ProfileAvatar';
 import { useProfile } from '../data/ProfileProvider';
 import { ProfileGate } from '../components/ProfileGate';
+import { text } from '../tokens';
 
 
 function Home() {
@@ -47,11 +48,7 @@ function Home() {
           component="h1" 
           gutterBottom 
           fontWeight="300"
-          sx={{ 
-            fontSize: { xs: '2.5rem', md: '3.5rem' },
-            mb: 2,
-            color: 'text.primary'
-          }}
+          sx={{ mb: 2, color: 'text.primary' }}
         >
           {basicInfo.name.ja.last} {basicInfo.name.ja.first}
         </Typography>
@@ -86,7 +83,7 @@ function Home() {
               minWidth: 140,
               borderRadius: 25,
               textTransform: 'none',
-              fontSize: '1.1rem',
+              fontSize: text.lg,
               py: 1.5,
               px: 3,
             }}
@@ -102,7 +99,7 @@ function Home() {
               minWidth: 140,
               borderRadius: 25,
               textTransform: 'none',
-              fontSize: '1.1rem',
+              fontSize: text.lg,
               py: 1.5,
               px: 3,
             }}
@@ -118,7 +115,7 @@ function Home() {
               minWidth: 140,
               borderRadius: 25,
               textTransform: 'none',
-              fontSize: '1.1rem',
+              fontSize: text.lg,
               py: 1.5,
               px: 3,
             }}

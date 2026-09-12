@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { text } from '../../tokens';
 
 const defaultMarkdown = `# Markdown サンドボックス
 
@@ -42,7 +43,7 @@ function MarkdownSandbox() {
         <Typography variant="h6" mb={1}>プレビュー</Typography>
         <Box component="hr" sx={{ border: 0, borderTop: '1px solid', borderColor: 'divider', mb: 2 }} />
         <Box sx={{ 
-          fontSize: 16, 
+          fontSize: text.base,
           '& table': { 
             borderCollapse: 'collapse', 
             width: '100%', 

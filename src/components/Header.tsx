@@ -3,14 +3,12 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
 import Navigation from './Navigation';
+import ColorSchemeToggle from './ColorSchemeToggle';
+import type { ColorSchemeState } from '../useColorScheme';
 import caseLogo from '/caselogo.svg';
 
-// テーマ切り替え用のpropsを受け取る（App.tsxで渡す想定）
-const Header = ({ mode, setMode }: { mode: 'light' | 'dark'; setMode: (m: 'light' | 'dark') => void }) => (
+const Header = ({ colorScheme }: { colorScheme: ColorSchemeState }) => (
   <AppBar
     position="fixed"
     color="default"
@@ -28,13 +26,11 @@ const Header = ({ mode, setMode }: { mode: 'light' | 'dark'; setMode: (m: 'light
     >
       <Box display="flex" alignItems="center" gap={1}>
         <Box component="img" src={caseLogo} alt="Logo" sx={{ width: 32, height: 32 }} />
-        <Typography variant="subtitle1" fontWeight="bold" sx={{ fontSize: 18 }}>ShowCase</Typography>
+        <Typography variant="h6" component="span">ShowCase</Typography>
       </Box>
       <Box display="flex" alignItems="center" gap={1}>
         <Navigation muiMode={true} />
-        <IconButton onClick={() => setMode(mode === 'light' ? 'dark' : 'light')} color="inherit" size="small">
-          {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-        </IconButton>
+        <ColorSchemeToggle colorScheme={colorScheme} />
       </Box>
     </Toolbar>
     {/* ヘッダー分の余白をbody上部に追加する場合は、Layout側で <Toolbar /> を挿入してください */}

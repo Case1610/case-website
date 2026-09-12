@@ -3,6 +3,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import { Link } from 'react-router-dom';
+import { text } from '../tokens';
 
 function NotFound() {
   return (
@@ -27,7 +28,7 @@ function NotFound() {
           textAlign: 'center' 
         }}
       >
-        <Typography variant="h1" component="h1" sx={{ fontSize: '6rem', fontWeight: 'bold', my: 4 }}>
+        <Typography variant="h1" component="h1" sx={{ fontWeight: 'bold', my: 4 }}>
           404
         </Typography>
         <Typography variant="h4" component="h2" gutterBottom>
@@ -41,7 +42,7 @@ function NotFound() {
           to="/" 
           variant="contained" 
           size="large" 
-          sx={{ mt: 3, fontSize: '1.1rem' }}
+          sx={{ mt: 3, fontSize: text.lg }}
         >
           トップページへ戻る
         </Button>

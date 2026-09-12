@@ -11,6 +11,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
+import { text } from '../tokens';
 
 interface NavigationProps {
   muiMode?: boolean;
@@ -84,7 +85,7 @@ const Navigation: React.FC<NavigationProps> = ({ muiMode = true }) => {
             to={link.to}
             color={location.pathname === link.to ? 'primary' : 'inherit'}
             variant={location.pathname === link.to ? 'contained' : 'text'}
-            sx={{ fontWeight: 'bold', fontSize: { xs: 14, sm: 16 } }}
+            sx={{ fontWeight: 'bold', fontSize: text.sm }}
           >
             {link.label}
           </Button>

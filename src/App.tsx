@@ -12,18 +12,18 @@ import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
 import Layout from './components/Layout';
 import React from 'react';
+import type { ColorSchemeState } from './useColorScheme';
 
 
 
 interface AppProps {
-  mode: 'light' | 'dark';
-  setMode: React.Dispatch<React.SetStateAction<'light' | 'dark'>>;
+  colorScheme: ColorSchemeState;
 }
 
-const App: React.FC<AppProps> = ({ mode, setMode }) => {
+const App: React.FC<AppProps> = ({ colorScheme }) => {
   return (
     <BrowserRouter>
-      <Layout mode={mode} setMode={setMode}>
+      <Layout colorScheme={colorScheme}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />

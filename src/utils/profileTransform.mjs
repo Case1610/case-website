@@ -54,10 +54,15 @@ const collectMissingDisplayFields = (profileData) => {
     });
   }
 
+  // 実名があるのに表示用が無いときだけ止める。
+  // この検査は「隠すと決めた実名がフォールバックで漏れる」ことを防ぐためのもので、
+  // **そもそも実名が無いなら漏れようがない。** 部署に当てはまる名前が無い、という状態は
+  // 実在する（2026-09-12、本人と確認）。無い項目を埋めさせるために止めるのは、
+  // 検査の目的から外れる。
   if (!PROFILE_DISPLAY_CONFIG.career.showSpecificDepartment) {
     profileData.career?.forEach((job, i) => {
-      if (!job.departmentDisplay) {
-        missing.push(`career[${i}].departmentDisplay（showSpecificDepartment=false のため必須）`);
+      if (job.department && !job.departmentDisplay) {
+        missing.push(`career[${i}].departmentDisplay（department があり showSpecificDepartment=false のため必須）`);
       }
     });
   }
@@ -72,8 +77,8 @@ const collectMissingDisplayFields = (profileData) => {
 
   if (!PROFILE_DISPLAY_CONFIG.education.showResearchLab) {
     profileData.education?.forEach((edu, i) => {
-      if (!edu.departmentDisplay) {
-        missing.push(`education[${i}].departmentDisplay（showResearchLab=false のため必須）`);
+      if (edu.department && !edu.departmentDisplay) {
+        missing.push(`education[${i}].departmentDisplay（department があり showResearchLab=false のため必須）`);
       }
     });
   }

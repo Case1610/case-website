@@ -85,9 +85,11 @@ function About() {
                     }
                     secondary={
                       <Box>
-                        <Typography variant="subtitle1" color="primary">
-                          {job.department}
-                        </Typography>
+                        {job.department && (
+                          <Typography variant="subtitle1" color="primary">
+                            {job.department}
+                          </Typography>
+                        )}
                         <Typography variant="body2" color="text.secondary">
                           {formatDate(job.start_date)} - {job.end_date ? formatDate(job.end_date) : '現在'}
                         </Typography>

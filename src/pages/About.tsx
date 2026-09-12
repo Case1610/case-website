@@ -11,12 +11,14 @@ import SchoolIcon from '@mui/icons-material/School';
 import WorkIcon from '@mui/icons-material/Work';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import ProfileAvatar from '../components/ProfileAvatar';
-import profileData from './profile.json';
-import { transformProfileForDisplay } from '../utils/profileTransform.mjs';
+import { useProfile } from '../data/ProfileProvider';
+import { ProfileGate } from '../components/ProfileGate';
 
 function About() {
-  // Apply privacy controls to profile data
-  const displayedProfile = transformProfileForDisplay(profileData);
+  const profileState = useProfile();
+  if (profileState.status !== 'ready') return <ProfileGate state={profileState} />;
+  // 層2から受け取った時点で表示用へ変換済み。削るのは送り出す側の仕事（Issue #7）
+  const displayedProfile = profileState.profile;
   const { basicInfo, biography, interests, strengths_finder, values, goals, career, education, certifications, skills } = displayedProfile;
   
   const formatDate = (dateString: string) => {

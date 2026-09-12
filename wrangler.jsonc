@@ -1,7 +1,17 @@
 {
+  // 公開URLのサブドメインになる: showcase.1610-case.workers.dev
   "name": "showcase",
   "compatibility_date": "2026-09-10",
+  "main": "./worker/index.ts",
+
+  // 静的アセット。Worker が拾わなかったパスはこちらへ流れる
   "assets": {
-    "directory": "./dist"
-  }
+    "directory": "./dist",
+    "binding": "ASSETS"
+  },
+
+  // 層2。プロフィールJSONと画像を置く場所（Issue #7）
+  "r2_buckets": [
+    { "binding": "CONTENT", "bucket_name": "case-content" }
+  ]
 }

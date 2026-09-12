@@ -8,12 +8,14 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import EmailIcon from '@mui/icons-material/Email';
 import ProfileAvatar from '../components/ProfileAvatar';
-import profileData from './profile.json';
-import { transformProfileForDisplay } from '../utils/profileTransform.mjs';
+import { useProfile } from '../data/ProfileProvider';
+import { ProfileGate } from '../components/ProfileGate';
 
 function Contact() {
-  // Apply privacy controls to profile data
-  const displayedProfile = transformProfileForDisplay(profileData);
+  const profileState = useProfile();
+  if (profileState.status !== 'ready') return <ProfileGate state={profileState} />;
+  // 層2から受け取った時点で表示用へ変換済み。削るのは送り出す側の仕事（Issue #7）
+  const displayedProfile = profileState.profile;
   const { basicInfo, social_links } = displayedProfile;
 
   return (

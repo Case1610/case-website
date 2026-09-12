@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { lightTheme, darkTheme } from './theme';
 import App from './App';
+import { ProfileProvider } from './data/ProfileProvider';
 
 const AppProvider: React.FC = () => {
   const [mode, setMode] = useState<'light' | 'dark'>(
@@ -11,7 +12,9 @@ const AppProvider: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <App mode={mode} setMode={setMode} />
+      <ProfileProvider>
+        <App mode={mode} setMode={setMode} />
+      </ProfileProvider>
     </ThemeProvider>
   );
 };

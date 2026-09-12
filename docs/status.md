@@ -170,9 +170,24 @@ Secret のズレ、sample.json の二役）。**境界を作るたびに検査�
 A のズレ問題（Secret は書けるが読めないため、正本が更新されてもサイトは古いまま、
 かつ誰も気づけない）は解消しない。暫定であることを前提に受け入れる。恒久策は Issue #7。
 
-現状、`PROFILE_JSON_B64` が未登録のため、`.github/workflows/deploy.yml` で
-`PROFILE_ALLOW_SAMPLE: '1'` を立てており、**公開サイトは架空の人物を表示している**。
-Secret を登録したらこのフラグを消すこと。
+**2026-09-12 に完了。公開サイトは実データを表示している。**
+
+`PROFILE_JSON_B64` を登録し、`PROFILE_ALLOW_SAMPLE` を削除した。
+サンプルへのフォールバックが無く `profile.source.json` も CI に存在しないため、
+**ビルドが通ること自体が Secret を正しく読めたことの証明**になっている。
+
+値は正本側の `公開用/profile.source.json` から生成したもので、正本の
+「公開時の表示」列だけで作られている。A の弱点（Secret は書けるが読めない）は
+残るが、守るべき値が入っていないためズレても漏れない。
+
+途中、最初に貼った base64 が壊れてビルドが `SyntaxError` で落ちた。
+`npm run` のバナーが混入し、`Buffer.from(x, 'base64')` がそれを黙って読み飛ばして
+中身がずれていた。`scripts/generate-profile.mjs` を直し、復号結果が JSON でなければ
+停止するようにした。生の JSON も受け付ける（Secrets は複数行を保持できる）。
+
+残件: `biography` は AI の下書きのまま、`strengths_finder.top_5` / `skills` /
+`social_links` は空。埋める材料として本人の Wantedly 公開プロフィールが候補
+（クラウド実行環境からは egress 制限で取得できないため、本人からの提供が要る）。
 
 ### 8. 実データを入れるときの前提
 

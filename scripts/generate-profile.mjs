@@ -23,10 +23,50 @@ const samplePath = path.join(pagesDir, 'profile.sample.json');
 // サンプルを使いたい場合は PROFILE_ALLOW_SAMPLE=1 を明示する。
 // 明示を要求するのは、サンプルでのビルドを禁止したいからではなく、
 // サンプルで動いていることを見えるようにしたいため。
+/**
+ * PROFILE_JSON_B64 の中身を読む。base64 でも生の JSON でも受け付ける。
+ *
+ * 名前に B64 と付いているが、GitHub Secrets は複数行の値を保持できるため、
+ * JSON をそのまま貼っても構わない。base64 は「1行に平たくしたい人向け」の選択肢であって
+ * 必須ではない。両方受けるのは、貼り方を間違えても通るようにするためではなく、
+ * **間違えたときに黙って壊れた値を使わないようにするため**である。
+ *
+ * Buffer.from(x, 'base64') は base64 として無効な文字を黙って読み飛ばす。
+ * そのため余計な行が1行混ざっただけで、復号は「成功」しつつ中身がずれる。
+ * 実際 2026-09-12 に、npm のバナー行が混ざった値を貼ってこの事故が起きた。
+ * だから復号結果が JSON でなければ、そこで止めて原因を名指しする。
+ */
+const parseProfileEnv = (raw) => {
+  const trimmed = raw.trim();
+
+  // 生の JSON をそのまま貼った場合
+  if (trimmed.startsWith('{')) {
+    return JSON.parse(trimmed);
+  }
+
+  // base64 の場合。空白・改行は base64 の一部ではないので先に落とす
+  const compact = trimmed.replace(/\s+/g, '');
+  const decoded = Buffer.from(compact, 'base64').toString('utf-8');
+
+  if (!decoded.trimStart().startsWith('{')) {
+    throw new Error(
+      'PROFILE_JSON_B64 を復号しましたが、JSON ではありませんでした。\n' +
+      '\n' +
+      '  貼った値に余計な文字が混ざっている可能性が高いです。\n' +
+      '  base64 は無効な文字を読み飛ばすため、1行混ざるだけで中身がずれます。\n' +
+      '\n' +
+      '  確実なのは、base64 にせず JSON をそのまま貼ることです。\n' +
+      '  この変数は生の JSON も受け付けます（先頭が { なら JSON として読みます）。\n'
+    );
+  }
+
+  return JSON.parse(decoded);
+};
+
 const readSource = () => {
   if (process.env.PROFILE_JSON_B64) {
     console.log('Source: PROFILE_JSON_B64 environment variable.');
-    return JSON.parse(Buffer.from(process.env.PROFILE_JSON_B64, 'base64').toString('utf-8'));
+    return parseProfileEnv(process.env.PROFILE_JSON_B64);
   }
 
   if (fs.existsSync(localSourcePath)) {

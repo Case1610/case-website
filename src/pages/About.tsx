@@ -19,7 +19,10 @@ function About() {
   if (profileState.status !== 'ready') return <ProfileGate state={profileState} />;
   // 層2から受け取った時点で表示用へ変換済み。削るのは送り出す側の仕事（Issue #7）
   const displayedProfile = profileState.profile;
-  const { basicInfo, biography, interests, strengths_finder, values, goals, career, education, certifications, skills } = displayedProfile;
+  // 価値観（values）と目標（goals）は層2から届くが、ここでは表示しない。
+  // このサイトは主張ではなく証拠を置く場所であり、確かめられないものは並べない（Issue #8）。
+  // データ自体を削るかどうかは正本側の判断で、このリポジトリの担当ではない。
+  const { basicInfo, biography, interests, strengths_finder, career, education, certifications, skills } = displayedProfile;
   
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -167,32 +170,6 @@ function About() {
 
         {/* サイドバー */}
         <Box>
-          {/* 価値観 */}
-          <Paper elevation={3} sx={{ p: 3, mb: 4, borderRadius: 3 }}>
-            <Typography variant="h5" gutterBottom color="primary">
-              価値観
-            </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-              {values.map((value, index) => (
-                <Chip key={index} label={value} color="primary" variant="outlined" />
-              ))}
-            </Box>
-          </Paper>
-
-          {/* 目標 */}
-          <Paper elevation={3} sx={{ p: 3, mb: 4, borderRadius: 3 }}>
-            <Typography variant="h5" gutterBottom color="primary">
-              目標
-            </Typography>
-            <List dense>
-              {goals.map((goal, index) => (
-                <ListItem key={index}>
-                  <ListItemText primary={goal} />
-                </ListItem>
-              ))}
-            </List>
-          </Paper>
-
           {/* 強み */}
           <Paper elevation={3} sx={{ p: 3, mb: 4, borderRadius: 3 }}>
             <Typography variant="h5" gutterBottom color="primary">

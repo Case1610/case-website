@@ -115,7 +115,7 @@ function Home() {
           </Button>
           <Button
             component={Link}
-            to="/tools"
+            to="/works"
             variant="contained"
             size="large"
             sx={{ 
@@ -127,7 +127,7 @@ function Home() {
               px: 3,
             }}
           >
-            Tools
+            Works
           </Button>
           <Button
             component={Link}

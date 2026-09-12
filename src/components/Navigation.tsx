@@ -21,7 +21,6 @@ const navLinks = [
   { to: '/', label: 'Home' },
   { to: '/about', label: 'About' },
   { to: '/works', label: 'Works' },
-  { to: '/tools', label: 'Tools' },
 ];
 
 const Navigation: React.FC<NavigationProps> = ({ muiMode = true }) => {

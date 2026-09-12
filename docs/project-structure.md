@@ -33,11 +33,14 @@ src/
 │   ├── Contact.tsx        # お問い合わせページ
 │   ├── NotFound.tsx       # 404エラーページ
 │   ├── profile.json       # 表示用プロフィールデータ（ビルド時に生成。docs/profile-privacy.md 参照）
-│   └── tools/             # ツールページ群
-│       ├── index.tsx      # ツールページルート
-│       ├── MarkdownSandbox.tsx    # Markdownエディター
-│       ├── SocialStyleTest.tsx    # スタイルテスト
-│       └── ToolsNavigation.tsx    # ツール用ナビゲーション
+│   └── works/             # 作ったもの（旧 tools/ を統合。Issue #8）
+│       ├── index.tsx      # Works 一覧（作った順に並べる）
+│       ├── WorkPage.tsx   # その場で触れる作品を単独URLで開く枠
+│       ├── MarkdownSandbox.tsx    # Markdownサンドボックス
+│       └── SocialStyleTest.tsx    # ソーシャルスタイル診断
+├── data/                  # サイトが持つデータ
+│   ├── works.ts           # Works に載せるもののリスト（並び順・説明・なぜ作ったか）
+│   └── ProfileProvider.tsx # プロフィールの取得（層2）
 ├── assets/                # 静的アセット
 │   ├── react.svg         # Reactロゴ
 │   └── gallery/          # ギャラリー画像（Sony α6400のみ）
@@ -102,9 +105,10 @@ AppProvider (テーマ管理)
 / (Home) - ギャラリー表示
 ├── /about - 自己紹介
 ├── /contact - お問い合わせ
-├── /tools/ - ツールページ
-│   ├── /tools/markdown - Markdownサンドボックス
-│   └── /tools/social-style - ソーシャルスタイルテスト
+├── /works - 作ったもの一覧（作った順）
+│   ├── /works/markdown-sandbox - Markdownサンドボックス
+│   └── /works/social-style-test - ソーシャルスタイル診断
+├── /tools/* - /works へのリダイレクト（旧URLを壊さないため）
 └── * (NotFound) - 404エラーページ
 ```
 
@@ -121,10 +125,10 @@ AppProvider (テーマ管理)
 - **モーダル表示**: 画像・動画の拡大表示
 - **レスポンシブ**: 画面サイズに応じたカラム数調整
 
-### ツール機能
-- **サイドバーナビゲーション**: 折りたたみ可能
-- **Markdownエディター**: リアルタイムプレビュー
-- **動的ルーティング**: ツール内でのサブページ管理
+### その場で触れる作品
+- **Markdownサンドボックス**: 入力すると隣に整形結果が出る
+- **ソーシャルスタイル診断**: 12問に答えると4分類のどれに近いかを出す
+- どちらもブラウザの中だけで動く。Works 一覧から直接開ける
 
 ## 拡張可能な設計
 

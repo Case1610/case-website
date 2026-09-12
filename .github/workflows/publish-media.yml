@@ -1,0 +1,66 @@
+name: 配信用メディアを R2 へ
+
+# 層1（public/gallery/ の原本）→ 層2（R2）。
+#
+# プロフィールJSONは正本が別リポジトリにあるためそちら側の CI から上げているが、
+# 写真の原本はこのリポジトリにあるので経路が違う。ここから上げる。
+#
+# 原本が変わったときだけ走る。写真は滅多に増えず、変換は1枚あたり数秒かかるので、
+# 毎デプロイでやり直す必要がない。
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'public/gallery/**'
+      - 'scripts/build-media.mjs'
+      - '.github/workflows/publish-media.yml'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: npm ci
+
+      - name: 配信用を作る
+        run: node scripts/build-media.mjs
+
+      # wrangler は 4 系に固定する。
+      # 4 系で --remote を付けないとローカルの模擬ストレージへ書き込まれ、
+      # 「成功したのに実物には何も無い」という気づきにくい失敗になる（2026-09-12 に踏んでいる）。
+      - name: R2 へ上げる
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          npm i -g wrangler@4
+
+          put() {
+            echo "→ media/$(basename "$1")  ($2)"
+            wrangler r2 object put "case-content/media/$(basename "$1")" \
+              --file="$1" --content-type="$2" --remote
+          }
+
+          for f in media/*; do
+            case "$f" in
+              *.avif) put "$f" image/avif ;;
+              *.webp) put "$f" image/webp ;;
+              *.jpg)  put "$f" image/jpeg ;;
+              *.json) put "$f" application/json ;;
+              *) echo "!! 未知の拡張子なので上げない: $f"; exit 1 ;;
+            esac
+          done
+
+          # 動画は変換していない。この実行環境の ffmpeg は Playwright 用の縮小版で
+          # MOV/H.264 を読めないため（2026-09-12 に確認）。原本のまま置き、
+          # 再生は明示的な操作でのみ始める前提にしている。
+          for f in public/gallery/*.MOV; do
+            [ -e "$f" ] || continue
+            put "$f" video/quicktime
+          done

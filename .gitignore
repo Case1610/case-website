@@ -28,3 +28,7 @@ src/pages/profile.json
 *.njsproj
 *.sln
 *.sw?
+
+# media/: public/gallery/ の原本から生成される配信用（scripts/build-media.mjs）。
+# 生成物なのでコミットしない。CI が毎回作って R2 へ上げる
+/media/

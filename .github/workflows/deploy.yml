@@ -20,18 +20,11 @@ jobs:
       # 非公開項目がバンドルへ混入していたらここで止める（デプロイまで進ませない）
       - run: npm run verify:redaction
 
-      # ⚠ 暫定: PROFILE_JSON_B64 が未登録のため、公開サイトはサンプル（架空の人物）を
-      #   表示している。PROFILE_ALLOW_SAMPLE=1 はその状態を許可するスイッチ。
-      #
-      #   これを付けないとビルドは失敗する。原本が無いときに黙ってサンプルへ落ちる
-      #   挙動をやめたため（それが1年以上、架空の人物を公開していた原因だった）。
-      #
-      #   正本をどう届けるかは Issue #6 で設計中。決まったらこの2行を消すこと。
-      #   ここに残っている限り「サンプルで公開している」という意味になる。
+      # PROFILE_ALLOW_SAMPLE は付けない。Secret が無ければここで落ちる。
+      # 架空の人物を黙って公開する経路を残さないため（Issue #6）。
       - run: npm run build
         env:
           PROFILE_JSON_B64: ${{ secrets.PROFILE_JSON_B64 }}
-          PROFILE_ALLOW_SAMPLE: '1'
 
       - uses: cloudflare/wrangler-action@v3
         with:

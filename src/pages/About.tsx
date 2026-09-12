@@ -22,7 +22,7 @@ function About() {
   // 価値観（values）と目標（goals）は層2から届くが、ここでは表示しない。
   // このサイトは主張ではなく証拠を置く場所であり、確かめられないものは並べない（Issue #8）。
   // データ自体を削るかどうかは正本側の判断で、このリポジトリの担当ではない。
-  const { basicInfo, biography, interests, strengths_finder, career, education, certifications, skills } = displayedProfile;
+  const { basicInfo, biography, interests, strengths_finder, career, education, certifications } = displayedProfile;
   
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -209,23 +209,6 @@ function About() {
             </Box>
           </Paper>
 
-          {/* スキル */}
-          <Paper elevation={3} sx={{ p: 3, borderRadius: 3 }}>
-            <Typography variant="h5" gutterBottom color="primary">
-              技術スキル
-            </Typography>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-              {skills.map((skill, index) => (
-                <Chip 
-                  key={index} 
-                  label={skill.name} 
-                  color="primary" 
-                  variant="outlined" 
-                  size="small"
-                />
-              ))}
-            </Box>
-          </Paper>
         </Box>
       </Box>
     </Container>

@@ -44,7 +44,18 @@ Markdown の正本（別リポジトリ・非公開）
 
 1. 環境変数 `PROFILE_JSON_B64`（CI。GitHub Secrets から渡される）
 2. `src/pages/profile.source.json`（ローカル開発）
-3. `src/pages/profile.sample.json`（フォールバック）
+3. `src/pages/profile.sample.json` — **`PROFILE_ALLOW_SAMPLE=1` を明示したときだけ**
+
+3 は自動のフォールバックではない。1 も 2 も無く、フラグも立っていなければ
+**ビルドは失敗する**。
+
+2026-09-11 まではここが自動フォールバックで、原本が無いと黙って架空の人物のデータを
+使い、それが公開サイトに出ていた。データが足りないときに「それらしいもの」で埋めると、
+間違いが間違いの顔をしなくなる。落ちるのは、気づけるからである。
+
+`PROFILE_ALLOW_SAMPLE=1` はサンプルでのビルドを禁止しないための逃げ道であって、
+サンプルで動いていることを**見えるようにする**ための宣言である。
+CI で立っていれば、公開サイトがサンプルを表示しているという意味になる。
 
 ## なぜビルド時に変換するのか（重要）
 
@@ -147,10 +158,19 @@ export const PROFILE_DISPLAY_CONFIG = {
 
 ```bash
 # 上流の正本から profile.source.json を用意する（.gitignore対象）
-# 手元に無い場合はサンプルを雛形にする
-cp src/pages/profile.sample.json src/pages/profile.source.json
 npm run dev
 ```
+
+正本が手元に無い場合は、サンプルで動かすことを明示する。
+
+```bash
+PROFILE_ALLOW_SAMPLE=1 npm run dev
+```
+
+`cp profile.sample.json profile.source.json` でも動くが、勧めない。
+サンプルが原本の場所に座ると、後から見て区別がつかなくなる。
+`profile.source.json` は gitignore 対象なので、中身が本物か架空かは開いてみるまで
+分からない。フラグなら、実行した本人にもログにも「架空である」と残る。
 
 ### CI（GitHub Actions）
 
@@ -160,8 +180,11 @@ GitHub Secrets に `PROFILE_JSON_B64` を登録する。値は入力JSONのBase6
 base64 -w0 profile.source.json
 ```
 
-未設定でもビルドは通る（`profile.sample.json` にフォールバックし、サイトには
-サンプルデータが表示される）。
+**未設定だとビルドは失敗する。** これは意図した挙動である（上記「入力の優先順位」参照）。
+
+サンプルのまま公開してよい場合に限り、ワークフローで `PROFILE_ALLOW_SAMPLE: '1'` を
+立てる。2026-09-12 時点の `.github/workflows/deploy.yml` はその状態にあり、
+**公開サイトは架空の人物を表示している**。正本をどう届けるかは Issue #6 で設計中。
 
 ## 検証方法
 

@@ -11,7 +11,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "verify:redaction": "node scripts/verify-redaction.mjs",
-    "deploy": "wrangler deploy"
+    "deploy": "wrangler deploy",
+    "profile:secret": "node scripts/print-profile-b64.mjs"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

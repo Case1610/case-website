@@ -1,6 +1,6 @@
 name: 配信用メディアを R2 へ
 
-# 層1（public/gallery/ の原本）→ 層2（R2）。
+# 層1（originals/gallery/ の原本）→ 層2（R2）。
 #
 # プロフィールJSONは正本が別リポジトリにあるためそちら側の CI から上げているが、
 # 写真の原本はこのリポジトリにあるので経路が違う。ここから上げる。
@@ -11,7 +11,8 @@ on:
   push:
     branches: [main]
     paths:
-      - 'public/gallery/**'
+      - 'originals/gallery/**'
+      - 'public/profile/**'
       - 'scripts/build-media.mjs'
       - '.github/workflows/publish-media.yml'
   workflow_dispatch:
@@ -60,7 +61,7 @@ jobs:
           # 動画は変換していない。この実行環境の ffmpeg は Playwright 用の縮小版で
           # MOV/H.264 を読めないため（2026-09-12 に確認）。原本のまま置き、
           # 再生は明示的な操作でのみ始める前提にしている。
-          for f in public/gallery/*.MOV; do
+          for f in originals/gallery/*.MOV; do
             [ -e "$f" ] || continue
             put "$f" video/quicktime
           done

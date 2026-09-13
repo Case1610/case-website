@@ -154,7 +154,7 @@ function Home() {
           撮ったものであって作ったものではないため Works には入れず、
           Home に置くと初期表示で 120MB を読み込ませることになるため残しもしない。
           縮めて R2 へ移す作業（Issue #2）の中で、専用の置き場ごと作り直す。
-          public/gallery/ のファイルは消していない。 */}
+          originals/gallery/ のファイルは消していない。 */}
     </Container>
   );
 }

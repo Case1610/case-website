@@ -2,7 +2,7 @@
 //
 //   node scripts/build-media.mjs
 //
-// 原本（public/gallery/、1枚 10〜15MB、6000x4000）はそのまま配らない。
+// 原本（originals/gallery/、1枚 10〜15MB、6000x4000）はそのまま配らない。
 // 訪問者に必要なのは画面に映る大きさであって、撮影時の解像度ではない。
 // 原本を捨てるわけではなく、**配信用を別に作る**（Issue #2 / #7）。
 //
@@ -14,8 +14,21 @@ import fs from 'node:fs';
 import path from 'node:path';
 import sharp from 'sharp';
 
-const SRC_DIR = 'public/gallery';
+// public/ ではなく originals/ に置いてある。public/ は Vite が dist/ へ丸ごと写す場所で、
+// 原本をそこに置くと配信物に 120MB が混ざる（誰も参照していなくても、毎回アップロードされる）。
+// 原本は「変換の入力」であって「配るもの」ではない。置き場所でそれを言っている
+const SRC_DIR = 'originals/gallery';
 const OUT_DIR = 'media';
+
+// プロフィール画像。原本はまだ public/ にある（サイトが今も直接参照しているため）。
+// R2 に上がったことを確かめてから参照先を切り替え、そのとき originals/ へ移す。
+// 先に動かすと、配信用が上がる前にサイトが 404 を出す数分が生まれる
+const AVATAR_SRC = 'public/profile/avatar.jpg';
+
+// 丸いアバターは実寸 120〜200px（2倍で 400px まで）。拡大表示のときだけ大きいものが要る。
+// ギャラリーと同じ 640〜2560 を作るのは、誰も見ない大きさを作ることになる
+const AVATAR_WIDTHS = [320, 640, 1600];
+const AVATAR_FALLBACK_WIDTH = 640;
 
 // 実測して決めた（2026-09-12、A64_2024-11-04_11.38.41_2.jpg で比較）。
 //
@@ -43,19 +56,17 @@ const sources = fs
   .filter((f) => /\.jpe?g$/i.test(f))
   .sort();
 
-const manifest = [];
 let totalOut = 0;
 let totalIn = 0;
 
-for (const file of sources) {
-  const src = path.join(SRC_DIR, file);
-  const id = slug(file);
+/** 1枚の原本から、指定した幅の avif / webp と、fallback の jpeg を1枚作る */
+const convert = async (src, id, widths, fallbackWidth) => {
   const meta = await sharp(src).metadata();
   totalIn += fs.statSync(src).size;
 
   const variants = [];
 
-  for (const width of WIDTHS) {
+  for (const width of widths) {
     // 原本より大きくしない。引き伸ばしてもデータが増えるだけで情報は増えない
     if (width > meta.width) continue;
 
@@ -71,29 +82,39 @@ for (const file of sources) {
     }
   }
 
-  const fbKey = `${id}-${FALLBACK_WIDTH}.jpg`;
-  const fbBuf = await sharp(src).resize({ width: FALLBACK_WIDTH }).toFormat('jpeg', JPEG).toBuffer();
+  const fbKey = `${id}-${fallbackWidth}.jpg`;
+  const fbBuf = await sharp(src).resize({ width: fallbackWidth }).toFormat('jpeg', JPEG).toBuffer();
   fs.writeFileSync(path.join(OUT_DIR, fbKey), fbBuf);
   totalOut += fbBuf.length;
 
-  manifest.push({
+  console.log(`${path.basename(src)} → ${variants.length + 1} 個`);
+
+  return {
     id,
-    source: file,
+    source: path.basename(src),
     sourceWidth: meta.width,
     sourceHeight: meta.height,
     aspectRatio: +(meta.width / meta.height).toFixed(4),
     fallback: fbKey,
     variants,
-  });
+  };
+};
 
-  console.log(`${file} → ${variants.length + 1} 個`);
+const manifest = [];
+for (const file of sources) {
+  manifest.push(await convert(path.join(SRC_DIR, file), slug(file), WIDTHS, FALLBACK_WIDTH));
 }
+
+// アバターはギャラリーとは別枠。一覧に混ぜると「写真の一覧」を出したときに顔写真が並ぶ
+const avatar = fs.existsSync(AVATAR_SRC)
+  ? await convert(AVATAR_SRC, 'profile-avatar', AVATAR_WIDTHS, AVATAR_FALLBACK_WIDTH)
+  : null;
 
 // 一覧はサイト側で書かず、変換した側が出す。
 // 何があるかを知っているのは変換した側であり、手で二重に書くとズレる。
 fs.writeFileSync(
   path.join(OUT_DIR, 'manifest.json'),
-  `${JSON.stringify({ schemaVersion: '1.0.0', items: manifest }, null, 2)}\n`
+  `${JSON.stringify({ schemaVersion: '1.1.0', items: manifest, avatar }, null, 2)}\n`
 );
 
 const mb = (n) => (n / 1048576).toFixed(1);

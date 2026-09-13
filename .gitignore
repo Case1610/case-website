@@ -13,10 +13,10 @@ dist-ssr
 *.local
 
 # Personal information
-# profile.source.json: 実データの原本（ローカル開発用）
-# profile.json: そこから生成される配信用データ（prebuild/predevで毎回作り直される）
-src/pages/profile.source.json
-src/pages/profile.json
+# dev-data/: 開発サーバが /api/* に返すローカルの中身。
+# 本番では層2（R2）から返るもので、このリポジトリの持ち物ではない。
+# 置かなければ開発サーバは本番の Worker へ取りに行く（vite.config.ts）
+/dev-data/
 
 # Editor directories and files
 .vscode/*

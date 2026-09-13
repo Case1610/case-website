@@ -10,9 +10,10 @@
 `.github/workflows/deploy.yml`
 
 1. `npm ci`
-2. `npm run verify:redaction` — 非公開項目がバンドルへ混入していないか検証。
+2. `npm run verify:boundary` — 受け取り側の検査が効いているか、プロフィールが
+   バンドルへ焼き込まれる経路に戻っていないかを検証。
    **失敗するとここで止まり、デプロイまで進まない**
-3. `npm run build` — `prebuild` で `profile.json` を生成してから Vite ビルド
+3. `npm run build` — Vite ビルド。中身の入力は要らない（実行時に層2 から取りに行く）
 4. `wrangler deploy` — `dist/` を Cloudflare Workers の静的アセットとして配信
 
 ## 必要な GitHub Secrets
@@ -20,7 +21,7 @@
 | 名前 | 必須 | 用途 |
 |---|---|---|
 | `CLOUDFLARE_API_TOKEN` | ✅ | デプロイの認証。Cloudflare の「アカウント API トークン」から発行し、テンプレートは「Edit Cloudflare Workers」を使う |
-| `PROFILE_JSON_B64` | — | プロフィール実データ（Base64）。未設定なら `profile.sample.json` にフォールバックする。詳細は profile-privacy.md |
+| ~~`PROFILE_JSON_B64`~~ | — | **2026-09-13 に廃止**。ビルドに中身の入力は要らない（実行時に層2 から取りに行く）。詳細は profile-privacy.md |
 
 ## 設定ファイル
 
@@ -43,12 +44,13 @@ npm install
 npm run dev              # 開発サーバー
 npm run build            # 本番ビルド
 npm run preview          # ビルド結果の確認
-npm run verify:redaction # 非公開項目の検証
+npm run verify:boundary  # 境界の検査
 npx wrangler deploy --dry-run  # デプロイ設定の検証（実際には送らない）
 ```
 
 ## 注意
 
-- `public/` 配下のファイルはそのまま公開される
-- `src/pages/profile.json` は生成物。手で編集しても次のビルドで上書きされる
-- `.env` など機密情報はコミットしない。実データは GitHub Secrets 経由で渡す
+- `public/` 配下のファイルはそのまま公開される。**dist へ丸ごと写されるので、
+  誰も参照していないファイルも毎回アップロードされる。** 画像の原本は `originals/` へ
+- プロフィールのデータはこのリポジトリに無い。R2（層2）から実行時に取りに行く
+- `.env` など機密情報はコミットしない

@@ -8,7 +8,7 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import EmailIcon from '@mui/icons-material/Email';
 import ProfileAvatar from '../components/ProfileAvatar';
-import { useProfile } from '../data/ProfileProvider';
+import { useProfile } from '../data/profileContext';
 import { ProfileGate } from '../components/ProfileGate';
 
 function Contact() {

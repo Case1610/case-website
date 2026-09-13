@@ -17,14 +17,13 @@ jobs:
 
       - run: npm ci
 
-      # 非公開項目がバンドルへ混入していたらここで止める（デプロイまで進ませない）
-      - run: npm run verify:redaction
+      # 受け取り側の検査が効いていること、そしてプロフィールがバンドルへ
+      # 焼き込まれる経路に戻っていないことを確かめる。落ちたらデプロイまで進ませない
+      - run: npm run verify:boundary
 
-      # PROFILE_ALLOW_SAMPLE は付けない。Secret が無ければここで落ちる。
-      # 架空の人物を黙って公開する経路を残さないため（Issue #6）。
+      # ビルドにプロフィールの入力は要らない。中身は実行時に層2（R2）から取りに行く。
+      # PROFILE_JSON_B64 は 2026-09-13 に廃止した（docs/profile-privacy.md）
       - run: npm run build
-        env:
-          PROFILE_JSON_B64: ${{ secrets.PROFILE_JSON_B64 }}
 
       - uses: cloudflare/wrangler-action@v3
         with:

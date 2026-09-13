@@ -11,7 +11,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import WorkIcon from '@mui/icons-material/Work';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import ProfileAvatar from '../components/ProfileAvatar';
-import { useProfile } from '../data/ProfileProvider';
+import { useProfile } from '../data/profileContext';
 import { ProfileGate } from '../components/ProfileGate';
 
 function About() {

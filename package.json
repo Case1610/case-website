@@ -4,15 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "predev": "node scripts/generate-profile.mjs",
     "dev": "vite",
-    "prebuild": "node scripts/generate-profile.mjs",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "verify:redaction": "node scripts/verify-redaction.mjs",
-    "deploy": "wrangler deploy",
-    "profile:secret": "node scripts/print-profile-b64.mjs"
+    "verify:boundary": "node scripts/verify-boundary.mjs",
+    "deploy": "wrangler deploy"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

@@ -1,3 +1,16 @@
+/**
+ * 層2（R2）から受け取るプロフィールの形。
+ *
+ * 正本は層2 の `schema.json`（実行時にも取りに行き、受け取ったデータを照合する）。
+ * ここにあるのはその TypeScript 版で、**契約そのものではなく写し**。
+ * 食い違ったときに正しいのは schema.json のほう。
+ *
+ * `gender` / `nationality` のような、公開しないと決めた項目は**型にも置かない。**
+ * 型に残しておくと「いつか来るかもしれない」という顔をするが、
+ * schema.json の `x-forbiddenKeys` はそれが来たら止めると言っている。
+ * 片方が「来るかも」、もう片方が「来たら止める」では、読む人が判断できない。
+ */
+
 export interface ProfileName {
   ja: { first: string; last: string };
   en: { first: string; last: string };
@@ -5,10 +18,8 @@ export interface ProfileName {
 
 export interface ProfileBasicInfo {
   name: ProfileName;
-  gender?: string;
+  /** 年だけ。schema.json が `^[0-9]{4}$` で縛っている */
   birthday: string;
-  birthdayDisplay?: string;
-  nationality?: string;
 }
 
 export interface ProfileBiography {
@@ -24,9 +35,7 @@ export interface ProfileSocialLink {
 
 export interface ProfileCareerEducation {
   organization: string;
-  organizationDisplay?: string;
-  department: string;
-  departmentDisplay?: string;
+  department?: string;
   start_date: string;
   end_date: string | null;
   description: string;
@@ -66,33 +75,3 @@ export interface ProfileData {
   certifications: ProfileCertification[];
   skills: ProfileSkill[];
 }
-
-export declare const PROFILE_DISPLAY_CONFIG: {
-  basicInfo: {
-    showFullBirthday: boolean;
-    showGender: boolean;
-    showNationality: boolean;
-  };
-  career: {
-    showSpecificOrganization: boolean;
-    showSpecificDepartment: boolean;
-    showFullDates: boolean;
-  };
-  education: {
-    showSpecificSchool: boolean;
-    showResearchLab: boolean;
-  };
-  socialLinks: {
-    showTwitter: boolean;
-    showWantedly: boolean;
-  };
-  certifications: {
-    showPersonalAchievements: boolean;
-    showUrls: boolean;
-  };
-};
-
-/**
- * 表示用フィールドが未設定の場合は実名へフォールバックせず throw する。
- */
-export declare const transformProfileForDisplay: (profileData: ProfileData) => ProfileData;

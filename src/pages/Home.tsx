@@ -9,7 +9,7 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import Divider from '@mui/material/Divider';
 import { Link } from 'react-router-dom';
 import ProfileAvatar from '../components/ProfileAvatar';
-import { useProfile } from '../data/ProfileProvider';
+import { useProfile } from '../data/profileContext';
 import { ProfileGate } from '../components/ProfileGate';
 import { text } from '../tokens';
 

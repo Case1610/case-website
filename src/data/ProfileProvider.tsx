@@ -1,6 +1,7 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { validateAgainstSchema } from './profileSchema.mjs';
-import type { ProfileData } from '../utils/profileTransform.d.mts';
+import { ProfileContext, type ProfileState } from './profileContext';
+import type { ProfileData } from '../types/profile';
 
 /**
  * プロフィールを層2（R2）から実行時に取得する。
@@ -11,16 +12,6 @@ import type { ProfileData } from '../utils/profileTransform.d.mts';
  * 取得に失敗したときに、それらしい既定値で埋めない。
  * 空欄は「まだ無い」と読めるが、埋めた値は「これが事実だ」と読まれてしまう。
  */
-
-type ProfileState =
-  | { status: 'loading' }
-  | { status: 'ready'; profile: ProfileData }
-  | { status: 'error'; message: string };
-
-const ProfileContext = createContext<ProfileState>({ status: 'loading' });
-
-export const useProfile = () => useContext(ProfileContext);
-
 export function ProfileProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<ProfileState>({ status: 'loading' });
 

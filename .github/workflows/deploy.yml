@@ -30,6 +30,11 @@ jobs:
       # 焼き込まれる経路に戻っていないことを確かめる。落ちたらデプロイまで進ませない
       - run: npm run verify:boundary
 
+      # デザインシステムのトークンは向こうのリポジトリが原本で、こちらは写しを持っている。
+      # 配信中の原本と突き合わせ、ずれていたら止める。写しは黙って古くなるのが常なので、
+      # 「気づけない」状態を作らないための一手（揃えるのは npm run sync:tokens）
+      - run: npm run verify:tokens
+
       # ビルドにプロフィールの入力は要らない。中身は実行時に層2（R2）から取りに行く。
       # PROFILE_JSON_B64 は 2026-09-13 に廃止した（docs/profile-privacy.md）
       - run: npm run build

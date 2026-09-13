@@ -4,12 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
     "build": "tsc -b && vite build",
+    "deploy": "wrangler deploy",
+    "dev": "vite",
     "lint": "eslint .",
     "preview": "vite preview",
+    "sync:tokens": "node scripts/sync-tokens.mjs",
     "verify:boundary": "node scripts/verify-boundary.mjs",
-    "deploy": "wrangler deploy"
+    "verify:tokens": "node scripts/verify-tokens.mjs"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

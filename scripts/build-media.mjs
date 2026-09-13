@@ -20,10 +20,8 @@ import sharp from 'sharp';
 const SRC_DIR = 'originals/gallery';
 const OUT_DIR = 'media';
 
-// プロフィール画像。原本はまだ public/ にある（サイトが今も直接参照しているため）。
-// R2 に上がったことを確かめてから参照先を切り替え、そのとき originals/ へ移す。
-// 先に動かすと、配信用が上がる前にサイトが 404 を出す数分が生まれる
-const AVATAR_SRC = 'public/profile/avatar.jpg';
+// プロフィール画像。ギャラリーと同じく原本であって配るものではない
+const AVATAR_SRC = 'originals/profile/avatar.jpg';
 
 // 丸いアバターは実寸 120〜200px（2倍で 400px まで）。拡大表示のときだけ大きいものが要る。
 // ギャラリーと同じ 640〜2560 を作るのは、誰も見ない大きさを作ることになる

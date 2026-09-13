@@ -6,6 +6,18 @@ import Box from '@mui/material/Box';
 import CloseIcon from '@mui/icons-material/Close';
 import type { SxProps, Theme } from '@mui/material/styles';
 
+/**
+ * プロフィール画像は層2（R2）から来る。このリポジトリには原本しか無い。
+ *
+ * 丸で見えているのは実寸 100〜150px なので、2倍の画面でも 320px あれば足りる。
+ * 拡大表示のときだけ大きいものを取りに行く。
+ * 以前は 2784x1856 の 3.6MB を、100px の丸のために毎回配っていた。
+ */
+const CIRCLE_SRC = '/api/media/profile-avatar-320.webp';
+const CIRCLE_SRCSET =
+  '/api/media/profile-avatar-320.webp 320w, /api/media/profile-avatar-640.webp 640w';
+const FULL_SRC = '/api/media/profile-avatar-1600.webp';
+
 interface ProfileAvatarProps {
   src?: string;
   alt?: string;
@@ -18,7 +30,7 @@ interface ProfileAvatarProps {
 }
 
 function ProfileAvatar({
-  src = "/profile/avatar.jpg",
+  src = CIRCLE_SRC,
   alt = "Profile picture",
   size = 120,
   borderColor = 'white',
@@ -60,6 +72,11 @@ function ProfileAvatar({
         alt={alt}
         sx={avatarSx}
         onClick={handleClick}
+        imgProps={{
+          srcSet: src === CIRCLE_SRC ? CIRCLE_SRCSET : undefined,
+          sizes: `${size}px`,
+          decoding: 'async',
+        }}
         onError={(e) => {
           (e.target as HTMLImageElement).style.display = 'none';
         }}
@@ -101,7 +118,7 @@ function ProfileAvatar({
           </IconButton>
           <Box 
             component="img" 
-            src={src} 
+            src={src === CIRCLE_SRC ? FULL_SRC : src} 
             alt="プロフィール画像（拡大）" 
             sx={{ 
               maxWidth: '90vw', 

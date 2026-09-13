@@ -1,6 +1,6 @@
 name: 配信用メディアを R2 へ
 
-# 層1（originals/gallery/ の原本）→ 層2（R2）。
+# 層1（originals/ の原本）→ 層2（R2）。
 #
 # プロフィールJSONは正本が別リポジトリにあるためそちら側の CI から上げているが、
 # 写真の原本はこのリポジトリにあるので経路が違う。ここから上げる。
@@ -11,8 +11,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'originals/gallery/**'
-      - 'public/profile/**'
+      - 'originals/**'
       - 'scripts/build-media.mjs'
       - '.github/workflows/publish-media.yml'
   workflow_dispatch:

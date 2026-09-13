@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- C: 容れ物としての C。開いた口に中身がひとつ収まっている -->
+  <path d="M 376 152 A 152 152 0 1 0 376 360"
+        fill="none" stroke="#14161a" stroke-width="88" stroke-linecap="butt"/>
+  <rect x="288" y="200" width="168" height="112" rx="28" fill="#3f69d3"/>
+</svg>

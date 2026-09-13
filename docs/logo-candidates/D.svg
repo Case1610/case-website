@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- D: 重ねた層。数を見せる。手前の1枚だけが色を持つ -->
+  <rect x="80" y="96"  width="288" height="288" rx="40" fill="none" stroke="#14161a" stroke-width="48"/>
+  <rect x="144" y="160" width="288" height="288" rx="40" fill="#ffffff" stroke="#14161a" stroke-width="48"/>
+  <rect x="196" y="212" width="184" height="184" rx="20" fill="#3f69d3"/>
+</svg>

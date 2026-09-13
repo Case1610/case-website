@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><mask id="m9" maskUnits="userSpaceOnUse" x="-10000" y="-10000" width="20000" height="20000">
+      <path fill-rule="evenodd" fill="#fff" d="M 0 500 a 500 500 0 1 0 1000 0 a 500 500 0 1 0 -1000 0 Z
+     M 191 500 a 309 309 0 1 0 618 0 a 309 309 0 1 0 -618 0 Z"/>
+      <rect x="500" y="253" width="691" height="494" fill="#000"/>
+    </mask>
+    <rect x="-10000" y="-10000" width="20000" height="20000" fill="#eff2f7" mask="url(#m9)"/></svg>

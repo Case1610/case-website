@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2140 1140">
+  <rect width="2140" height="1140" fill="#f4f5f7"/>
+  <rect x="28" y="28" width="2084" height="1084" fill="none" stroke="#c2c8d2"/>
+  <circle cx="290" cy="490" r="200" fill="none" stroke="#aab0bb" stroke-width="1.6" stroke-dasharray="7 7"/>
+  <circle cx="290" cy="490" r="124" fill="none" stroke="#aab0bb" stroke-width="1.6" stroke-dasharray="7 7"/>
+  <line x1="30" y1="490" x2="550" y2="490" stroke="#aab0bb" stroke-width="1.6" stroke-dasharray="7 7"/>
+  <line x1="290" y1="230" x2="290" y2="750" stroke="#aab0bb" stroke-width="1.6" stroke-dasharray="7 7"/>
+  <line x1="290" y1="400" x2="550" y2="400" stroke="#3f69d3" stroke-width="1.6" stroke-dasharray="7 7"/>
+  <line x1="290" y1="580" x2="550" y2="580" stroke="#3f69d3" stroke-width="1.6" stroke-dasharray="7 7"/>
+  <mask id="m1" maskUnits="userSpaceOnUse" x="-10000" y="-10000" width="20000" height="20000">
+      <path fill-rule="evenodd" fill="#fff" d="M 90 490 a 200 200 0 1 0 400 0 a 200 200 0 1 0 -400 0 Z
+     M 166 490 a 124 124 0 1 0 248 0 a 124 124 0 1 0 -248 0 Z"/>
+      <rect x="290" y="400" width="276" height="180" fill="#000"/>
+    </mask>
+    <rect x="-10000" y="-10000" width="20000" height="20000" fill="#23272e" mask="url(#m1)"/>
+  <text x="290" y="810" font-size="46" font-family="sans-serif" fill="#1c1f24" text-anchor="middle" font-weight="700">c</text>
+  <text x="290" y="852" font-size="21" font-family="sans-serif" fill="#4a4f58" text-anchor="middle" font-weight="400">右を開ける</text>
+  <line x1="560" y1="210" x2="560" y2="930" stroke="#d3d8e0"/>
+  <circle cx="810" cy="490" r="200" fill="none" stroke="#aab0bb" stroke-width="1.6" stroke-dasharray="7 7"/>
+  <circle cx="810" cy="490" r="124" fill="none" stroke="#aab0bb" stroke-width="1.6" stroke-dasharray="7 7"/>
+  <line x1="550" y1="490" x2="1070" y2="490" stroke="#aab0bb" stroke-width="1.6" stroke-dasharray="7 7"/>
+  <line x1="810" y1="230" x2="810" y2="750" stroke="#aab0bb" stroke-width="1.6" stroke-dasharray="7 7"/>
+  <line x1="934" y1="230" x2="934" y2="750" stroke="#3f69d3" stroke-width="1.6" stroke-dasharray="7 7"/>
+  <line x1="1010" y1="230" x2="1010" y2="750" stroke="#3f69d3" stroke-width="1.6" stroke-dasharray="7 7"/>
+  <mask id="m2" maskUnits="userSpaceOnUse" x="-10000" y="-10000" width="20000" height="20000">
+      <path fill-rule="evenodd" fill="#fff" d="M 610 490 a 200 200 0 1 0 400 0 a 200 200 0 1 0 -400 0 Z
+     M 686 490 a 124 124 0 1 0 248 0 a 124 124 0 1 0 -248 0 Z"/>
+      <rect x="934" y="290" width="76" height="400" fill="#fff"/>
+      
+    </mask>
+    <rect x="-10000" y="-10000" width="20000" height="20000" fill="#23272e" mask="url(#m2)"/>
+  <text x="810" y="810" font-size="46" font-family="sans-serif" fill="#1c1f24" text-anchor="middle" font-weight="700">a</text>
+  <text x="810" y="852" font-size="21" font-family="sans-serif" fill="#4a4f58" text-anchor="middle" font-weight="400">右に縦棒を足す</text>
+  <line x1="1080" y1="210" x2="1080" y2="930" stroke="#d3d8e0"/>
+  <circle cx="1330" cy="490" r="200" fill="none" stroke="#aab0bb" stroke-width="1.6" stroke-dasharray="7 7"/>
+  <circle cx="1330" cy="490" r="124" fill="none" stroke="#aab0bb" stroke-width="1.6" stroke-dasharray="7 7"/>
+  <line x1="1070" y1="490" x2="1590" y2="490" stroke="#aab0bb" stroke-width="1.6" stroke-dasharray="7 7"/>
+  <line x1="1330" y1="230" x2="1330" y2="750" stroke="#aab0bb" stroke-width="1.6" stroke-dasharray="7 7"/>
+  <circle cx="1330" cy="390" r="100" fill="none" stroke="#3f69d3" stroke-width="1.6" stroke-dasharray="7 7"/>
+  <circle cx="1330" cy="590" r="100" fill="none" stroke="#3f69d3" stroke-width="1.6" stroke-dasharray="7 7"/>
+  <path fill="none" stroke="#23272e" stroke-width="76" stroke-linecap="butt" d="
+    M 1383.69 421.00
+    A 62 62 0 1 0 1330.00 452.00
+    A 62 62 0 1 1 1276.31 621.00"/>
+  <text x="1330" y="810" font-size="46" font-family="sans-serif" fill="#1c1f24" text-anchor="middle" font-weight="700">s</text>
+  <text x="1330" y="852" font-size="21" font-family="sans-serif" fill="#4a4f58" text-anchor="middle" font-weight="400">半径を半分にして2つ</text>
+  <line x1="1600" y1="210" x2="1600" y2="930" stroke="#d3d8e0"/>
+  <circle cx="1850" cy="490" r="200" fill="none" stroke="#aab0bb" stroke-width="1.6" stroke-dasharray="7 7"/>
+  <circle cx="1850" cy="490" r="124" fill="none" stroke="#aab0bb" stroke-width="1.6" stroke-dasharray="7 7"/>
+  <line x1="1590" y1="490" x2="2110" y2="490" stroke="#aab0bb" stroke-width="1.6" stroke-dasharray="7 7"/>
+  <line x1="1850" y1="230" x2="1850" y2="750" stroke="#aab0bb" stroke-width="1.6" stroke-dasharray="7 7"/>
+  <line x1="1590" y1="490" x2="2110" y2="490" stroke="#3f69d3" stroke-width="1.6" stroke-dasharray="7 7"/>
+  <mask id="m3" maskUnits="userSpaceOnUse" x="-10000" y="-10000" width="20000" height="20000">
+      <path fill-rule="evenodd" fill="#fff" d="M 1650 490 a 200 200 0 1 0 400 0 a 200 200 0 1 0 -400 0 Z
+     M 1726 490 a 124 124 0 1 0 248 0 a 124 124 0 1 0 -248 0 Z"/>
+      <rect x="1650" y="452" width="400" height="76" fill="#fff"/>
+      <rect x="1886" y="528" width="276" height="180" fill="#000"/>
+    </mask>
+    <rect x="-10000" y="-10000" width="20000" height="20000" fill="#23272e" mask="url(#m3)"/>
+  <text x="1850" y="810" font-size="46" font-family="sans-serif" fill="#1c1f24" text-anchor="middle" font-weight="700">e</text>
+  <text x="1850" y="852" font-size="21" font-family="sans-serif" fill="#4a4f58" text-anchor="middle" font-weight="400">横棒を入れて右下を開ける</text>
+  <text x="60" y="96" font-size="42" font-family="sans-serif" fill="#1c1f24" text-anchor="start" font-weight="700">case — ひとつの円から</text>
+  <text x="60" y="140" font-size="23" font-family="sans-serif" fill="#4a4f58" text-anchor="start" font-weight="400">c・a・e は同じ円を違う切り方にしただけのもの。s だけが半径を半分にした2つの円から出る。</text>
+  <text x="60" y="176" font-size="23" font-family="sans-serif" fill="#3f69d3" text-anchor="start" font-weight="400">外円の半径 R、線の太さ W = R / φ²。φ = (1 + √5) / 2</text>
+  <text x="60" y="950" font-size="22" font-family="sans-serif" fill="#4a4f58" text-anchor="start" font-weight="400">開口 AP = R × 0.9　（c と e で共通）</text>
+  <text x="60" y="988" font-size="22" font-family="sans-serif" fill="#4a4f58" text-anchor="start" font-weight="400">字間 = W × 1.4</text>
+  <text x="60" y="1026" font-size="22" font-family="sans-serif" fill="#4a4f58" text-anchor="start" font-weight="400">この図は書体と同じ関数から描いている。形を直せば図も直る。</text>
+  <text x="60" y="1080" font-size="21" font-family="sans-serif" fill="#4a4f58" text-anchor="start" font-weight="400">2026-09-13</text>
+</svg>

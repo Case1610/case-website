@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><mask id="m1" maskUnits="userSpaceOnUse" x="-10000" y="-10000" width="20000" height="20000">
+      <path fill-rule="evenodd" fill="#fff" d="M 0 500 a 500 500 0 1 0 1000 0 a 500 500 0 1 0 -1000 0 Z
+     M 191 500 a 309 309 0 1 0 618 0 a 309 309 0 1 0 -618 0 Z"/>
+      <rect x="500" y="253" width="691" height="494" fill="#000"/>
+    </mask>
+    <rect x="-10000" y="-10000" width="20000" height="20000" fill="#eff2f7" mask="url(#m1)"/><mask id="m2" maskUnits="userSpaceOnUse" x="-10000" y="-10000" width="20000" height="20000">
+      <path fill-rule="evenodd" fill="#fff" d="M 235 500 a 79 79 0 1 0 158 0 a 79 79 0 1 0 -158 0 Z
+     M 265 500 a 49 49 0 1 0 98 0 a 49 49 0 1 0 -98 0 Z"/>
+      <rect x="363" y="421" width="30" height="158" fill="#fff"/>
+      
+    </mask>
+    <rect x="-10000" y="-10000" width="20000" height="20000" fill="#eff2f7" mask="url(#m2)"/><path fill="none" stroke="#eff2f7" stroke-width="30" stroke-linecap="butt" d="
+    M 521.22 472.75
+    A 24.5 24.5 0 1 0 500.00 485.00
+    A 24.5 24.5 0 1 1 478.78 551.75"/><mask id="m3" maskUnits="userSpaceOnUse" x="-10000" y="-10000" width="20000" height="20000">
+      <path fill-rule="evenodd" fill="#fff" d="M 607 500 a 79 79 0 1 0 158 0 a 79 79 0 1 0 -158 0 Z
+     M 637 500 a 49 49 0 1 0 98 0 a 49 49 0 1 0 -98 0 Z"/>
+      <rect x="607" y="485" width="158" height="30" fill="#fff"/>
+      <rect x="700.22" y="515" width="109" height="71" fill="#000"/>
+    </mask>
+    <rect x="-10000" y="-10000" width="20000" height="20000" fill="#eff2f7" mask="url(#m3)"/></svg>

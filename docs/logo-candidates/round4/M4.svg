@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><mask id="m6" maskUnits="userSpaceOnUse" x="-10000" y="-10000" width="20000" height="20000">
+      <path fill-rule="evenodd" fill="#fff" d="M 0 500 a 500 500 0 1 0 1000 0 a 500 500 0 1 0 -1000 0 Z
+     M 191 500 a 309 309 0 1 0 618 0 a 309 309 0 1 0 -618 0 Z"/>
+      <rect x="500" y="268" width="691" height="464" fill="#000"/>
+    </mask>
+    <rect x="-10000" y="-10000" width="20000" height="20000" fill="#14161a" mask="url(#m6)"/><mask id="m7" maskUnits="userSpaceOnUse" x="-10000" y="-10000" width="20000" height="20000">
+      <path fill-rule="evenodd" fill="#fff" d="M 309 500 a 191 191 0 1 0 382 0 a 191 191 0 1 0 -382 0 Z
+     M 382 500 a 118 118 0 1 0 236 0 a 118 118 0 1 0 -236 0 Z"/>
+      <rect x="618" y="309" width="73" height="382" fill="#fff"/>
+      
+    </mask>
+    <rect x="-10000" y="-10000" width="20000" height="20000" fill="#14161a" mask="url(#m7)"/><mask id="m8" maskUnits="userSpaceOnUse" x="-10000" y="-10000" width="20000" height="20000">
+      <path fill-rule="evenodd" fill="#fff" d="M 427 500 a 73 73 0 1 0 146 0 a 73 73 0 1 0 -146 0 Z
+     M 455 500 a 45 45 0 1 0 90 0 a 45 45 0 1 0 -90 0 Z"/>
+      <rect x="500" y="466" width="101" height="68" fill="#000"/>
+    </mask>
+    <rect x="-10000" y="-10000" width="20000" height="20000" fill="#14161a" mask="url(#m8)"/></svg>

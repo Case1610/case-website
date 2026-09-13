@@ -18,8 +18,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateAgainstSchema } from '../src/data/profileSchema.mjs';
-// eslint-disable-next-line no-unused-vars -- checkFingerprint は上の TODO で戻す
-import { runCases, checkFingerprint, cases } from './boundary-cases.mjs';
+import { runCases, cases } from './boundary-cases.mjs';
 
 /**
  * 契約は層2（R2）にある。CI もそこから取りに来る。
@@ -58,7 +57,7 @@ failures.push(...brokenChecker);
 // 理由でサイトがデプロイできなくなる**ので、いったん外してある。
 //
 // ケース（boundary-cases.mjs）は両側とも同期済み。突き合わせの一手だけが未接続。
-// 配られたことを確認したら、下のコメントを外して checkFingerprint を戻す。
+// 配られたことを確認したら、下のコメントを外し、checkFingerprint を import に戻す。
 //
 // console.log('\n■ 送り出す側と振る舞いが食い違っていないか');
 // try {

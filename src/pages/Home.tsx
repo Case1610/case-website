@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import ProfileAvatar from '../components/ProfileAvatar';
 import { useProfile } from '../data/profileContext';
 import { ProfileGate } from '../components/ProfileGate';
+import PhotoGallery from '../components/PhotoGallery';
 import { text } from '../tokens';
 
 
@@ -150,11 +151,18 @@ function Home() {
 
       <Divider sx={{ my: 8 }} />
 
-      {/* 写真ギャラリーは一旦外した（2026-09-12、Issue #2）。
-          撮ったものであって作ったものではないため Works には入れず、
-          Home に置くと初期表示で 120MB を読み込ませることになるため残しもしない。
-          縮めて R2 へ移す作業（Issue #2）の中で、専用の置き場ごと作り直す。
-          originals/gallery/ のファイルは消していない。 */}
+      {/* 写真は Works に入れない。撮ったものであって作ったものではないため。
+          2026-09-12 に一度外したのは初期表示で 120MB を読み込ませていたからで、
+          いまは層2（R2）から画面に必要な1枚だけを取る（スマホで約450KB）。 */}
+      <Box component="section" sx={{ pb: 8 }}>
+        <Typography variant="h4" component="h2" gutterBottom>
+          Photos
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+          撮ったもの。作ったものではないので Works とは分けています。
+        </Typography>
+        <PhotoGallery />
+      </Box>
     </Container>
   );
 }

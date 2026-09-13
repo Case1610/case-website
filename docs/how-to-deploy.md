@@ -39,8 +39,12 @@
 
 ## ローカルでの確認
 
+> **CI と同じ条件で確かめるなら `npm install` ではなく `npm ci`。**
+> 手元の `node_modules` にはロックファイルに無いものが残っていることがある。
+> 2026-09-13 に `@types/node` がそれで、手元のビルドは通るのに CI だけが落ちた。
+
 ```sh
-npm install
+npm ci
 npm run dev              # 開発サーバー
 npm run build            # 本番ビルド
 npm run preview          # ビルド結果の確認

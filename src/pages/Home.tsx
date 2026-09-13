@@ -155,11 +155,8 @@ function Home() {
           2026-09-12 に一度外したのは初期表示で 120MB を読み込ませていたからで、
           いまは層2（R2）から画面に必要な1枚だけを取る（スマホで約450KB）。 */}
       <Box component="section" sx={{ pb: 8 }}>
-        <Typography variant="h4" component="h2" gutterBottom>
+        <Typography variant="h4" component="h2" sx={{ mb: 3 }}>
           Photos
-        </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-          撮ったもの。作ったものではないので Works とは分けています。
         </Typography>
         <PhotoGallery />
       </Box>

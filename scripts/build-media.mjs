@@ -12,6 +12,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import sharp from 'sharp';
 
 // public/ ではなく originals/ に置いてある。public/ は Vite が dist/ へ丸ごと写す場所で、
@@ -57,42 +58,70 @@ const sources = fs
 let totalOut = 0;
 let totalIn = 0;
 
+/**
+ * 原本を読む口はここ1箇所にする。
+ *
+ * `.rotate()` を引数なしで呼ぶと EXIF の向きが適用される。**これを忘れると、
+ * 縦で撮った写真が横倒しのまま配信される**（2026-09-13 にアバターで踏んだ）。
+ * カメラは撮像素子の向きのまま保存して「あとで回してね」と EXIF に書くだけなので、
+ * 読む側が回さなければ回らない。
+ */
+const read = (src) => sharp(src).rotate();
+
+/** EXIF で回した後の寸法。metadata() は回す前の値を返すため、必要なら入れ替える */
+const orientedSize = (meta) =>
+  (meta.orientation ?? 1) >= 5
+    ? { width: meta.height, height: meta.width }
+    : { width: meta.width, height: meta.height };
+
+/**
+ * 中身から名前を作る。
+ *
+ * Worker は media を `immutable` で1年持たせている。それが正しいのは
+ * **中身が変われば名前も変わるとき**だけ。幅しか名前に入っていないと、
+ * 同じ幅で焼き直した瞬間に、古い画像が1年配られ続ける（上の EXIF の修正が
+ * まさにそれで消えるところだった）。
+ */
+const hash = (buf) => crypto.createHash('sha256').update(buf).digest('hex').slice(0, 8);
+
 /** 1枚の原本から、指定した幅の avif / webp と、fallback の jpeg を1枚作る */
 const convert = async (src, id, widths, fallbackWidth) => {
-  const meta = await sharp(src).metadata();
+  const meta = await read(src).metadata();
+  const size = orientedSize(meta);
   totalIn += fs.statSync(src).size;
 
   const variants = [];
 
+  const write = async (width, ext, fmt, opt) => {
+    const buf = await read(src).resize({ width }).toFormat(fmt, opt).toBuffer();
+    const key = `${id}-${width}-${hash(buf)}.${ext}`;
+    fs.writeFileSync(path.join(OUT_DIR, key), buf);
+    totalOut += buf.length;
+    return key;
+  };
+
   for (const width of widths) {
     // 原本より大きくしない。引き伸ばしてもデータが増えるだけで情報は増えない
-    if (width > meta.width) continue;
+    if (width > size.width) continue;
 
     for (const [ext, fmt, opt] of [
       ['avif', 'avif', AVIF],
       ['webp', 'webp', WEBP],
     ]) {
-      const key = `${id}-${width}.${ext}`;
-      const buf = await sharp(src).resize({ width }).toFormat(fmt, opt).toBuffer();
-      fs.writeFileSync(path.join(OUT_DIR, key), buf);
-      totalOut += buf.length;
-      variants.push({ key, width, type: `image/${ext}` });
+      variants.push({ key: await write(width, ext, fmt, opt), width, type: `image/${ext}` });
     }
   }
 
-  const fbKey = `${id}-${fallbackWidth}.jpg`;
-  const fbBuf = await sharp(src).resize({ width: fallbackWidth }).toFormat('jpeg', JPEG).toBuffer();
-  fs.writeFileSync(path.join(OUT_DIR, fbKey), fbBuf);
-  totalOut += fbBuf.length;
+  const fbKey = await write(fallbackWidth, 'jpg', 'jpeg', JPEG);
 
   console.log(`${path.basename(src)} → ${variants.length + 1} 個`);
 
   return {
     id,
     source: path.basename(src),
-    sourceWidth: meta.width,
-    sourceHeight: meta.height,
-    aspectRatio: +(meta.width / meta.height).toFixed(4),
+    sourceWidth: size.width,
+    sourceHeight: size.height,
+    aspectRatio: +(size.width / size.height).toFixed(4),
     fallback: fbKey,
     variants,
   };
@@ -112,7 +141,7 @@ const avatar = fs.existsSync(AVATAR_SRC)
 // 何があるかを知っているのは変換した側であり、手で二重に書くとズレる。
 fs.writeFileSync(
   path.join(OUT_DIR, 'manifest.json'),
-  `${JSON.stringify({ schemaVersion: '1.1.0', items: manifest, avatar }, null, 2)}\n`
+  `${JSON.stringify({ schemaVersion: '2.0.0', items: manifest, avatar }, null, 2)}\n`
 );
 
 const mb = (n) => (n / 1048576).toFixed(1);

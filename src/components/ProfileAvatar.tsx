@@ -5,18 +5,18 @@ import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
 import CloseIcon from '@mui/icons-material/Close';
 import type { SxProps, Theme } from '@mui/material/styles';
+import { useMedia } from '../data/mediaContext';
+import { srcSetFor, smallestWebp, largestWebp } from '../data/mediaTypes';
 
 /**
  * プロフィール画像は層2（R2）から来る。このリポジトリには原本しか無い。
  *
- * 丸で見えているのは実寸 100〜150px なので、2倍の画面でも 320px あれば足りる。
- * 拡大表示のときだけ大きいものを取りに行く。
- * 以前は 2784x1856 の 3.6MB を、100px の丸のために毎回配っていた。
+ * **URL を直接書かない。** ファイル名には中身のハッシュが入っていて、
+ * 焼き直すたびに変わる（Worker が immutable で1年持たせているのはそのため）。
+ * どれを取ればいいかは manifest が知っている。
+ *
+ * 丸で見えているのは実寸 100〜150px。拡大表示のときだけ大きいものを取りに行く。
  */
-const CIRCLE_SRC = '/api/media/profile-avatar-320.webp';
-const CIRCLE_SRCSET =
-  '/api/media/profile-avatar-320.webp 320w, /api/media/profile-avatar-640.webp 640w';
-const FULL_SRC = '/api/media/profile-avatar-1600.webp';
 
 interface ProfileAvatarProps {
   src?: string;
@@ -30,7 +30,7 @@ interface ProfileAvatarProps {
 }
 
 function ProfileAvatar({
-  src = CIRCLE_SRC,
+  src,
   alt = "Profile picture",
   size = 120,
   borderColor = 'white',
@@ -41,6 +41,12 @@ function ProfileAvatar({
   ...props
 }: ProfileAvatarProps) {
   const [modalOpen, setModalOpen] = useState(false);
+  const media = useMedia();
+  const avatar = media.status === 'ready' ? media.manifest.avatar : null;
+
+  // manifest が来るまでは src を持たない。Avatar は fallbackText を出す
+  const circleSrc = src ?? (avatar ? smallestWebp(avatar) : undefined);
+  const fullSrc = src ?? (avatar ? largestWebp(avatar) : undefined);
 
   const avatarSx = {
     width: size,
@@ -68,12 +74,12 @@ function ProfileAvatar({
   return (
     <>
       <Avatar
-        src={src}
+        src={circleSrc}
         alt={alt}
         sx={avatarSx}
         onClick={handleClick}
         imgProps={{
-          srcSet: src === CIRCLE_SRC ? CIRCLE_SRCSET : undefined,
+          srcSet: !src && avatar ? srcSetFor(avatar, 'image/webp') : undefined,
           sizes: `${size}px`,
           decoding: 'async',
         }}
@@ -118,7 +124,7 @@ function ProfileAvatar({
           </IconButton>
           <Box 
             component="img" 
-            src={src === CIRCLE_SRC ? FULL_SRC : src} 
+            src={fullSrc} 
             alt="プロフィール画像（拡大）" 
             sx={{ 
               maxWidth: '90vw', 

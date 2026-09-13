@@ -1,81 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { useMedia } from '../data/mediaContext';
+import { MEDIA, srcSetFor, largestWebp, type MediaItem } from '../data/mediaTypes';
 
 /**
  * 写真は層2（R2）から配る。このリポジトリにあるのは原本だけで、配るのは別物。
- *
- * 何があるかを知っているのは**変換した側**なので、一覧（manifest.json）も
- * 変換した側が出す。サイト側に「この8枚を出す」と手で書くと、写真を足したときに
- * 片方だけ古くなる。
  *
  * 原本は1枚 10〜15MB（6000x4000）。そのまま並べると開いた瞬間に 100MB を
  * 読み込ませることになるので、幅ごとに作った配信用から、画面に必要な1枚だけを取る。
  */
 
-interface Variant {
-  key: string;
-  width: number;
-  type: string;
-}
-
-interface Item {
-  id: string;
-  aspectRatio: number;
-  fallback: string;
-  variants: Variant[];
-}
-
-interface Manifest {
-  schemaVersion: string;
-  items: Item[];
-}
-
-const MEDIA = '/api/media/';
-
 /** グリッドは最大3列。1列あたり ~460px なので、2倍の画面でも 1280 あれば足りる */
 const SIZES = '(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 33vw';
 
-const srcSetFor = (item: Item, type: string) =>
-  item.variants
-    .filter((v) => v.type === type)
-    .map((v) => `${MEDIA}${v.key} ${v.width}w`)
-    .join(', ');
-
-/** 一番大きい webp。拡大表示のときだけ取りに行く */
-const largest = (item: Item) => {
-  const webp = item.variants.filter((v) => v.type === 'image/webp');
-  return webp.length > 0
-    ? `${MEDIA}${webp.reduce((a, b) => (a.width > b.width ? a : b)).key}`
-    : `${MEDIA}${item.fallback}`;
-};
-
 export function PhotoGallery() {
-  const [state, setState] = useState<
-    { status: 'loading' } | { status: 'ready'; items: Item[] } | { status: 'error' }
-  >({ status: 'loading' });
-  const [opened, setOpened] = useState<Item | null>(null);
+  const media = useMedia();
+  const [opened, setOpened] = useState<MediaItem | null>(null);
 
-  useEffect(() => {
-    let cancelled = false;
-    fetch(`${MEDIA}manifest.json`)
-      .then((res) => (res.ok ? res.json() : Promise.reject(new Error(String(res.status)))))
-      .then((manifest: Manifest) => {
-        if (!cancelled) setState({ status: 'ready', items: manifest.items ?? [] });
-      })
-      .catch(() => {
-        if (!cancelled) setState({ status: 'error' });
-      });
-    return () => { cancelled = true; };
-  }, []);
-
-  if (state.status === 'loading') return null;
+  if (media.status === 'loading') return null;
 
   // 黙って消さない。消えていることに気づけるのは持ち主だけなので
-  if (state.status === 'error') {
+  if (media.status === 'error') {
     return (
       <Typography variant="body2" color="text.secondary">
         写真を読み込めませんでした。
@@ -83,7 +32,8 @@ export function PhotoGallery() {
     );
   }
 
-  if (state.items.length === 0) return null;
+  const items = media.manifest.items ?? [];
+  if (items.length === 0) return null;
 
   return (
     <>
@@ -98,7 +48,7 @@ export function PhotoGallery() {
           gap: 2,
         }}
       >
-        {state.items.map((item) => (
+        {items.map((item) => (
           <Box
             key={item.id}
             onClick={() => setOpened(item)}
@@ -143,7 +93,7 @@ export function PhotoGallery() {
         {opened && (
           <Box
             component="img"
-            src={largest(opened)}
+            src={largestWebp(opened)}
             alt=""
             sx={{ maxWidth: '95vw', maxHeight: '95vh', objectFit: 'contain', display: 'block' }}
           />

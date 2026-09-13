@@ -4,6 +4,7 @@ import { lightTheme, darkTheme } from './theme';
 import { useColorScheme } from './useColorScheme';
 import App from './App';
 import { ProfileProvider } from './data/ProfileProvider';
+import { MediaProvider } from './data/MediaProvider';
 
 const AppProvider: React.FC = () => {
   const colorScheme = useColorScheme();
@@ -15,9 +16,11 @@ const AppProvider: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <ProfileProvider>
-        <App colorScheme={colorScheme} />
-      </ProfileProvider>
+      <MediaProvider>
+        <ProfileProvider>
+          <App colorScheme={colorScheme} />
+        </ProfileProvider>
+      </MediaProvider>
     </ThemeProvider>
   );
 };

@@ -180,7 +180,12 @@ function About() {
 
         {/* サイドバー */}
         <Box>
-          {/* 強み */}
+          {/* 強み。
+              正本側が空で配っているあいだは、節ごと出さない。見出しだけが残ると
+              「あるはずのものが欠けている」に見えるが、実際には**出すかどうかが
+              まだ決まっていない**（docs/status.md の未決1）。決まっていないものを
+              空の器として置いておくと、決まっていないことが見えなくなる。 */}
+          {strengths_finder.top_5.length > 0 && (
           <Paper elevation={3} sx={{ p: 3, mb: 4, borderRadius: 3 }}>
             <Typography variant="h5" gutterBottom color="primary">
               強みトップ5
@@ -200,6 +205,7 @@ function About() {
               ))}
             </Box>
           </Paper>
+          )}
 
           {/* 興味・関心 */}
           <Paper elevation={3} sx={{ p: 3, mb: 4, borderRadius: 3 }}>

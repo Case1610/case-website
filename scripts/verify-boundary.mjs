@@ -2,10 +2,11 @@
 //
 //   npm run verify:boundary
 //
-// 見ているのは2つ。
+// 見ているのは3つ。
 //
 // 1. 受け取り側の検査器（src/data/profileSchema.mjs）が、契約の書き方を正しく解釈するか
-// 2. プロフィールのデータが、ビルド時にバンドルへ焼き込まれる経路に戻っていないか
+// 2. その検査器の振る舞いが、**送り出す側と食い違っていないか**（契約の指紋と突き合わせる）
+// 3. プロフィールのデータが、ビルド時にバンドルへ焼き込まれる経路に戻っていないか
 //
 // 2 が要るのは、この経路が**一度あったから**。以前はビルド時に実データを
 // 読み込んで JSON を作り、それを import していた。import された JSON は
@@ -17,7 +18,26 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateAgainstSchema } from '../src/data/profileSchema.mjs';
-import { runCases, cases } from './boundary-cases.mjs';
+import { runCases, checkFingerprint, cases } from './boundary-cases.mjs';
+
+/**
+ * 契約は層2（R2）にある。CI もそこから取りに来る。
+ *
+ * 手元に `dev-data/schema.json` があればそれを使う（開発サーバと同じ規則）。
+ * 無ければ公開されている層2 を読みに行く。**どちらも駄目なら止める。**
+ * 契約を確かめずに配るくらいなら、配らないほうがいい。
+ */
+const SCHEMA_URL = process.env.SCHEMA_URL ?? 'https://showcase.1610-case.workers.dev/api/schema.json';
+const LOCAL_SCHEMA = 'dev-data/schema.json';
+
+const loadContract = async () => {
+  if (fs.existsSync(LOCAL_SCHEMA)) {
+    return { schema: JSON.parse(fs.readFileSync(LOCAL_SCHEMA, 'utf-8')), from: LOCAL_SCHEMA };
+  }
+  const res = await fetch(SCHEMA_URL, { signal: AbortSignal.timeout(15000) });
+  if (!res.ok) throw new Error(`${SCHEMA_URL} が ${res.status} を返しました`);
+  return { schema: await res.json(), from: SCHEMA_URL };
+};
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const failures = [];
@@ -29,6 +49,20 @@ for (const c of cases) {
   console.log(`  ${failed ? '✗' : '✓'} ${c.name}`);
 }
 failures.push(...brokenChecker);
+
+console.log('\n■ 送り出す側と振る舞いが食い違っていないか');
+try {
+  const { schema, from } = await loadContract();
+  const drift = checkFingerprint(schema, validateAgainstSchema);
+  console.log(`  ${drift ? '✗' : '✓'} 契約の指紋と一致（契約の取得元: ${from}）`);
+  if (drift) failures.push(drift);
+} catch (error) {
+  console.log('  ✗ 契約を取得できなかった');
+  failures.push(
+    `契約（schema.json）を取得できませんでした: ${error instanceof Error ? error.message : String(error)}\n` +
+    `     → 手元で確かめるなら ${LOCAL_SCHEMA} を置く。`
+  );
+}
 
 console.log('\n■ プロフィールがバンドルへ焼き込まれる経路に戻っていないか');
 

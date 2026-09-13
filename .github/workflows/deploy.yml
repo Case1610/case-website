@@ -9,7 +9,16 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      # 原本（originals/、123MB）は取ってこない。デプロイに要るのは 980KB だけ。
+      # sparse-checkout を指定すると checkout は --filter=blob:none で取りに行くので、
+      # 除外したファイルの中身は**そもそもダウンロードされない**。
+      # 原本を別の場所へ移さなくても、毎回の 123MB はこれで消える
       - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            /*
+            !/originals/
+          sparse-checkout-cone-mode: false
 
       - uses: actions/setup-node@v4
         with:

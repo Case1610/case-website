@@ -20,6 +20,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
+      # こちらは原本が要るので全部取る。走るのは originals/ が変わったときだけ
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4

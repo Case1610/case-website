@@ -5,6 +5,9 @@ export interface SchemaSpec {
   properties?: Record<string, SchemaSpec>;
   items?: SchemaSpec;
   schemaVersion?: string;
+  'x-forbiddenKeys'?: string[];
+  /** 場所で禁止する。`[*]` は配列の任意の要素 */
+  'x-forbiddenPaths'?: string[];
 }
 
 /** 検査に失敗した理由をすべて返す。空配列なら合格 */

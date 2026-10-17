@@ -54,7 +54,8 @@ JSON が置かれたり、どこかが `.json` を `import` し始めたら、�
 | 書き方 | 言っていること |
 |---|---|
 | `required` / `type` / `pattern` | **入っているべきものが入っているか** |
-| `x-forbiddenKeys` | **入っていてはいけないものが入っていないか** |
+| `x-forbiddenKeys` | **入っていてはいけないものが入っていないか**（キーの名前で） |
+| `x-forbiddenPaths` | 同じく、ただし**場所で**（名前ごと禁止すると巻き込みが出るもの） |
 
 後者が無いと、「書かれていないものは何でも通る」という意味になる。
 原本の側で新しい項目を足したときに、公開してよいかの判断を誰も通さないまま
@@ -64,6 +65,11 @@ JSON が置かれたり、どこかが `.json` を `import` し始めたら、�
 `gender` / `nationality` / `all_ranking` / `address` / `phone` / `phoneNumber` / `postal_code` / `short-values`
 
 入れ子の**全階層**で探す。`career[0].address` のように深いところに紛れても見つかる。
+
+現在の `x-forbiddenPaths`: `$.certifications[*].description.title`（`[*]` は配列の任意の要素）
+
+資格の説明の `title` は配信しないと決めた（2026-10-18、本人）が、`title` という名前は
+職歴の肩書きなど別の場所で使いうる。名前で禁止するとそちらまで止まるので、場所で禁止する。
 
 `pattern` は形の制約で、いまは `basicInfo.birthday` に `^[0-9]{4}$`（年だけ）が
 かかっている。「年だけであること」はキーの名前では表せず、完全な生年月日が
@@ -138,7 +144,7 @@ npm run verify:boundary
 ```
 
 - 受け取り側の検査器が、契約の書き方（`required` / `type` / `pattern` /
-  `x-forbiddenKeys` / 版の一致）を正しく解釈するか（9ケース）
+  `x-forbiddenKeys` / `x-forbiddenPaths` / 版の一致）を正しく解釈するか（11ケース）
 - その振る舞いが、送り出す側と食い違っていないか（契約の指紋と突き合わせる）
 - プロフィールがバンドルへ焼き込まれる経路に戻っていないか
 

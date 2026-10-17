@@ -21,6 +21,7 @@ import { createHash } from 'node:crypto';
 export const TEST_SCHEMA = {
   schemaVersion: '9.9.9',
   'x-forbiddenKeys': ['gender', 'nationality', 'all_ranking', 'address'],
+  'x-forbiddenPaths': ['$.career[*].description.title'],
   type: 'object',
   required: ['schemaVersion', 'basicInfo', 'biography', 'career'],
   properties: {
@@ -73,6 +74,18 @@ export const cases = [
     name: '4階層下の禁止キーも見つかる',
     mutate: (d) => { d.basicInfo.name.ja.nationality = 'なにか'; },
     expect: 'nationality',
+  },
+  {
+    // 先頭の要素だけを見る実装を通さないよう、2つ目の要素に入れる
+    name: '場所で禁止した項目は、配列の何番目に入っていても落ちる',
+    mutate: (d) => { d.career.push({ organization: '見本2', description: { title: 'なにか' } }); },
+    expect: 'x-forbiddenPaths',
+  },
+  {
+    // 場所で禁止したのは、名前ごと禁止すると巻き込みが出るから。巻き込まないことも確かめる
+    name: '同じ名前でも、禁止していない場所なら通る',
+    mutate: (d) => { d.career[0].title = '肩書き'; },
+    expect: 'pass',
   },
   {
     name: '生年に完全な生年月日が入っていたら落ちる',
@@ -183,6 +196,13 @@ export const checkContract = (schema) => {
   for (const key of ['gender', 'nationality', 'all_ranking']) {
     if (!forbidden.includes(key)) {
       problems.push(`x-forbiddenKeys から "${key}" が消えている（公開しないと決めた項目）`);
+    }
+  }
+
+  const forbiddenPaths = schema['x-forbiddenPaths'] ?? [];
+  for (const path of ['$.certifications[*].description.title']) {
+    if (!forbiddenPaths.includes(path)) {
+      problems.push(`x-forbiddenPaths から "${path}" が消えている（配信しないと決めた場所）`);
     }
   }
 

@@ -22,6 +22,8 @@
 - プロフィールは**実行時に `/api/profile.json` を取りに行く**（R2 → Worker）。
   バンドルにはプロフィールのデータが1バイトも載っていない（載るのは取得先のURLだけ）
 - 配色と文字サイズはデザインシステムのトークンから生成している（2026-09-12、Issue #3）
+- 知らないパスには index.html を返す（`wrangler.jsonc` の `not_found_handling: "single-page-application"`）。
+  `/api/*` だけは Worker を先に通す（`run_worker_first`）。2026-10-18 まで /about などを直接開くと 404 だった（#11）
 
 ## 2026-09-10 〜 09-11 に起きたこと
 

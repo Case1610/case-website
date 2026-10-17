@@ -61,7 +61,7 @@ JSON が置かれたり、どこかが `.json` を `import` し始めたら、�
 配信経路に乗ってしまう。
 
 現在の `x-forbiddenKeys`:
-`gender` / `nationality` / `all_ranking` / `address` / `phone` / `phoneNumber` / `postal_code`
+`gender` / `nationality` / `all_ranking` / `address` / `phone` / `phoneNumber` / `postal_code` / `short-values`
 
 入れ子の**全階層**で探す。`career[0].address` のように深いところに紛れても見つかる。
 

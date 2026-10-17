@@ -23,7 +23,6 @@ export interface ProfileBasicInfo {
 }
 
 export interface ProfileBiography {
-  'short-values': string;
   short: string;
   long: string;
 }
@@ -42,7 +41,6 @@ export interface ProfileCareerEducation {
 }
 
 export interface ProfileCertificationDescription {
-  title: string;
   description: string;
   url?: string | null;
 }

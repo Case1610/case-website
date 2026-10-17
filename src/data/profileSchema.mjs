@@ -8,7 +8,8 @@
  * 検査は2種類ある。向きが逆なので、どちらか片方では足りない。
  *
  * - `required` / `type` / `pattern` … **入っているべきものが入っているか**
- * - `x-forbiddenKeys`           … **入っていてはいけないものが入っていないか**
+ * - `x-forbiddenKeys`           … **入っていてはいけないものが入っていないか**（キーの名前で）
+ * - `x-forbiddenPaths`          … 同じく、ただし**場所で**（名前だけでは決められないもの）
  *
  * 後者が無いと、原本の側で新しい項目を足したときに、公開してよいかの判断を
  * 誰も通さないまま配信経路に乗る。スキーマは「あるべき形」だけを書くと、
@@ -72,6 +73,15 @@ export const validateAgainstSchema = (data, schema) => {
     }
   }
 
+  // 名前ごと禁止すると巻き込みが出るものは、場所で禁止する。
+  // たとえば資格の説明の `title` は配信しないが、`title` という名前は
+  // 別の場所（職歴の肩書きなど）で使いうる。`[*]` は配列のどの要素にも当たる
+  for (const pattern of schema['x-forbiddenPaths'] ?? []) {
+    for (const path of findPath(data, pattern)) {
+      problems.push(`${path}: この場所は配信してはいけない（x-forbiddenPaths）`);
+    }
+  }
+
   if (schema.schemaVersion && data?.schemaVersion !== schema.schemaVersion) {
     problems.push(
       `$.schemaVersion: スキーマは ${schema.schemaVersion} を期待しているが、` +
@@ -93,6 +103,22 @@ const findKey = (value, key, path = '$') => {
   for (const [k, v] of Object.entries(value)) {
     if (k === key) found.push(`${path}.${k}`);
     found.push(...findKey(v, key, `${path}.${k}`));
+  }
+  return found;
+};
+
+/** value の中で pattern に当たる場所を全部返す。pattern の `[*]` は配列の任意の要素 */
+const findPath = (value, pattern, path = '$') => {
+  const found = [];
+  if (Array.isArray(value)) {
+    value.forEach((item, i) => found.push(...findPath(item, pattern, `${path}[${i}]`)));
+    return found;
+  }
+  if (value === null || typeof value !== 'object') return found;
+  for (const [k, v] of Object.entries(value)) {
+    const here = `${path}.${k}`;
+    if (here.replace(/\[\d+\]/g, '[*]') === pattern) found.push(here);
+    found.push(...findPath(v, pattern, here));
   }
   return found;
 };

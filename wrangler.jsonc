@@ -7,7 +7,12 @@
   // 静的アセット。Worker が拾わなかったパスはこちらへ流れる
   "assets": {
     "directory": "./dist",
-    "binding": "ASSETS"
+    "binding": "ASSETS",
+    // /about などを直接開いたときも index.html を返し、画面の切り替えはブラウザ側に任せる。
+    // これが無いと、トップから辿れば出るページが、直接開く・再読み込みすると 404 になる
+    "not_found_handling": "single-page-application",
+    // SPA モードではページの読み込みに index.html が先に返るので、/api/* は Worker を先に通す
+    "run_worker_first": ["/api/*"]
   },
 
   // 層2。プロフィールJSONと画像を置く場所（Issue #7）
